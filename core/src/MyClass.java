@@ -6,7 +6,7 @@ import java.util.List;
 public class MyClass {
     public static void main(String[] args) {
         // Set path to Chrome Webdriver
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\A517946\\IdeaProjects\\MyProject\\MyModule\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\A517946\\IdeaProjects\\fantastic-bassoon\\core\\chromedriver.exe");
 
         WebDriver wd = new ChromeDriver();
         ProviderLeBonCoin lbc = new ProviderLeBonCoin(wd);
