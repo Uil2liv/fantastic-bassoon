@@ -6,12 +6,12 @@ import java.util.List;
 public class MyClass {
     public static void main(String[] args) {
         // Set path to Chrome Webdriver
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\A517946\\IdeaProjects\\fantastic-bassoon\\core\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "core/chromedriver.exe");
 
         WebDriver wd = new ChromeDriver();
         ProviderLeBonCoin lbc = new ProviderLeBonCoin(wd);
 
-        Query q = new Query(AssetType.House, "Guer", "56380");
+        Query q = new Query("DummyQuery", AssetType.House, "Guer", "56380");
 
         List<Asset> assets = lbc.Search(q);
 
