@@ -11,6 +11,9 @@ public class Actions {
     static AbstractAction quitAction = createAction("Stop", "Quitter",
             "Quitter l'application", FantasticBassoon::closeApplication,
             KeyStroke.getKeyStroke(KeyEvent.VK_F4, InputEvent.ALT_DOWN_MASK), KeyEvent.VK_Q);
+    static AbstractAction removeSearchAction = createAction("Delete", "Supprimer",
+            "Supprimer la recherche sélectionnée", FantasticBassoon::deleteSearch,
+            KeyStroke.getKeyStroke((char) KeyEvent.VK_DELETE), KeyEvent.VK_S);
 
     static private AbstractAction createAction(String icon, String altText, String toolTip, Runnable func,
                                                KeyStroke shortcut, int mnemonic){

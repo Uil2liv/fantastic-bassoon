@@ -9,6 +9,10 @@ public class FantasticBassoon {
         new NewSearchDialog();
     }
 
+    public static void deleteSearch() {
+        System.out.println("On va supprimer une recherche.");
+    }
+
     public static void closeApplication() {
         System.exit(0);
     }

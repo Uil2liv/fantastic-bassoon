@@ -10,6 +10,7 @@ public class FileMenu extends JMenu {
 
         // Define the content of the menu
         this.add(Actions.newSearchAction);
+        this.add(Actions.removeSearchAction);
         this.add(new JSeparator());
         this.add(Actions.quitAction);
     }
