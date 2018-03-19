@@ -7,21 +7,11 @@ import java.util.Enumeration;
 
 public class Query implements MutableTreeNode, FantasticBassoon.Removable{
     // Properties
-/*
-    private int id;
-    public void setId(int id){
-        this.id = id;
-    }
-    public int getId() {
-        return this.id;
-    }
-*/
-
     private String name;
     public String getName() {
         return this.name;
     }
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -29,7 +19,7 @@ public class Query implements MutableTreeNode, FantasticBassoon.Removable{
     public AssetType getType(){
         return type;
     }
-    private void setType(AssetType type) {
+    public void setType(AssetType type) {
         this.type = type;
     }
 
@@ -37,7 +27,7 @@ public class Query implements MutableTreeNode, FantasticBassoon.Removable{
     public String getLocation(){
         return location;
     }
-    private void setLocation(String location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 
@@ -45,9 +35,43 @@ public class Query implements MutableTreeNode, FantasticBassoon.Removable{
     public String getZip(){
         return zip;
     }
-    private void setZip(String zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
+
+    private int minPrice;
+    public int getMinPrice() {
+        return minPrice;
+    }
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    private int maxPrice;
+    public int getMaxPrice() {
+        return maxPrice;
+    }
+    public void setMaxPrice(int maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
+    private int minArea;
+    public int getMinArea() {
+        return minArea;
+    }
+    public void setMinArea(int minArea) {
+        this.minArea = minArea;
+    }
+
+    private int maxArea;
+    public int getMaxArea() {
+        return maxArea;
+    }
+    public void setMaxArea(int maxArea) {
+        this.maxArea = maxArea;
+    }
+
+    // TODO: Min / Max Room Properties
 
     // Constructor
     public Query() {}

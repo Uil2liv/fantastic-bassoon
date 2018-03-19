@@ -1,11 +1,25 @@
+import sun.text.resources.es.JavaTimeSupplementary_es;
+
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.geom.QuadCurve2D;
 
 public class NewSearchDialog extends JDialog implements ActionListener{
-    JTextField searchNameField;
-    JTextField cityField;
-    JTextField zipField;
+    private JTextField searchNameField;
+    private JTextField cityField;
+    private JTextField zipField;
+    private JRadioButton typeHouse;
+    private JRadioButton typeLot;
+    private ButtonGroup typeGroup;
+    private JTextField minPriceField;
+    private JTextField maxPriceField;
+    private JTextField minAreaField;
+    private JTextField maxAreaField;
+
+    // TODO : Min / Max Room fields
 
     public NewSearchDialog() {
         super();
@@ -40,6 +54,27 @@ public class NewSearchDialog extends JDialog implements ActionListener{
         JLabel zipLabel = new JLabel("Code Postal :");
         zipField = new JTextField();
 
+        JLabel typeLabel = new JLabel("Type de bien :");
+        typeHouse = new JRadioButton("Maison");
+        typeLot = new JRadioButton("Terrain");
+        typeGroup = new ButtonGroup();
+        typeGroup.add(typeHouse);
+        typeGroup.add(typeLot);
+
+        JLabel priceLabel = new JLabel("Prix");
+        JLabel minPriceLabel = new JLabel("min :");
+        JLabel maxPriceLabel = new JLabel("max :");
+        JLabel unitPriceLabel = new JLabel("€");
+        minPriceField = new JTextField();
+        maxPriceField = new JTextField();
+
+        JLabel areaLabel = new JLabel("Surface");
+        JLabel minAreaLabel = new JLabel("min :");
+        JLabel maxAreaLabel = new JLabel("max :");
+        JLabel unitAreaLabel = new JLabel("m²");
+        minAreaField = new JTextField();
+        maxAreaField = new JTextField();
+
         // Creating buttons for submitting the form
         JButton cancelButton = new JButton("Annuler");
         cancelButton.addActionListener(this);
@@ -51,19 +86,38 @@ public class NewSearchDialog extends JDialog implements ActionListener{
 
         // Group layout Design
         // Horizontal layout
-        layout.setHorizontalGroup(layout.createSequentialGroup()
-            .addGroup(layout.createParallelGroup()
+        layout.setHorizontalGroup(layout.createParallelGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(searchNameLabel)
-                .addComponent(cityLabel))
-            .addGroup(layout.createParallelGroup()
-                .addComponent(searchNameField)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(cityField)
-                    .addComponent(zipLabel)
-                    .addComponent(zipField))
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(cancelButton)
-                    .addComponent(createButton)))
+                .addComponent(searchNameField))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(cityLabel)
+                .addComponent(cityField)
+                .addComponent(zipLabel)
+                .addComponent(zipField))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(typeLabel)
+                .addComponent(typeHouse)
+                .addComponent(typeLot))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(priceLabel)
+                .addComponent(minPriceLabel)
+                .addComponent(minPriceField)
+                .addComponent(unitPriceLabel)
+                .addComponent(maxPriceLabel)
+                .addComponent(maxPriceField)
+                .addComponent(unitPriceLabel))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(areaLabel)
+                .addComponent(minAreaLabel)
+                .addComponent(minAreaField)
+                .addComponent(unitAreaLabel)
+                .addComponent(maxAreaLabel)
+                .addComponent(maxAreaField)
+                .addComponent(unitAreaLabel))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(cancelButton)
+                .addComponent(createButton))
         );
 
         // Vertical layout
@@ -77,6 +131,26 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 .addComponent(zipLabel)
                 .addComponent(zipField))
             .addGroup(layout.createParallelGroup()
+                .addComponent(typeLabel)
+                .addComponent(typeHouse)
+                .addComponent(typeLot))
+            .addGroup(layout.createParallelGroup()
+                    .addComponent(priceLabel)
+                    .addComponent(minPriceLabel)
+                    .addComponent(minPriceField)
+                    .addComponent(unitPriceLabel)
+                    .addComponent(maxPriceLabel)
+                    .addComponent(maxPriceField)
+                    .addComponent(unitPriceLabel))
+            .addGroup(layout.createParallelGroup()
+                    .addComponent(areaLabel)
+                    .addComponent(minAreaLabel)
+                    .addComponent(minAreaField)
+                    .addComponent(unitAreaLabel)
+                    .addComponent(maxAreaLabel)
+                    .addComponent(maxAreaField)
+                    .addComponent(unitAreaLabel))
+                .addGroup(layout.createParallelGroup()
                 .addComponent(cancelButton)
                 .addComponent(createButton))
         );
@@ -92,7 +166,37 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 dispose();
                 break;
             case "CREATE" :
-                Query query = new Query(searchNameField.getText(), AssetType.House, cityField.getText(), zipField.getText());
+                Query query = new Query();
+                query.setName(searchNameField.getText());
+                query.setLocation(cityField.getText());
+                query.setZip(zipField.getText());
+                try {
+                    query.setMinPrice(Integer.parseInt(minPriceField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Impossible de convertir le prix min (" + minPriceField.getText() + ")");
+                }
+                try {
+                    query.setMaxPrice(Integer.parseInt(maxPriceField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Impossible de convertir le prix max (" + maxPriceField.getText() + ")");
+                }
+                try {
+                    query.setMinArea(Integer.parseInt(minAreaField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Impossible de convertir la surface min (" + minAreaField.getText() + ")");
+                }
+                try {
+                    query.setMaxArea(Integer.parseInt(maxAreaField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Impossible de convertir la surface max (" + maxAreaField.getText() + ")");
+                }
+
+                if (typeGroup.getSelection() == typeHouse.getModel()) {
+                    query.setType(AssetType.House);
+                } else if (typeGroup.getSelection() == typeLot.getModel()) {
+                    query.setType(AssetType.Lot);
+                }
+
                 FantasticBassoon.searches.add(query);
                 dispose();
                 break;

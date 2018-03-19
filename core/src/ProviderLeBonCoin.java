@@ -50,13 +50,32 @@ public class ProviderLeBonCoin implements IProvider {
         WebElement houseWidget = wd.findElement(By.id("ret_1"));
         WebElement lotWidget = wd.findElement(By.id("ret_3"));
         WebElement submitWidget = wd.findElement(By.id("searchbutton"));
+        WebElement minPriceWidget = wd.findElement(By.id("ps"));
+        WebElement maxPriceWidget = wd.findElement(By.id("pe"));
+        WebElement minAreaWidget = wd.findElement(By.id("sqs"));
+        WebElement maxAreaWidget = wd.findElement(By.id("sqe"));
+
+        // TODO: Min / Max Room elements
 
         // Enter the location criteria
-        locWidget.sendKeys(q.getLocation() + " " + q.getZipCode());
-        // Then confirm by clicking on the dropdown list
-        WebElement locConfirm = (new WebDriverWait(wd, 10))
-                .until(ExpectedConditions.presenceOfNestedElementLocatedBy(By.className("location-list"),By.xpath("li[1]")));
-        locConfirm.click();
+        if (Boolean.parseBoolean(q.getLocation())) {
+            locWidget.sendKeys(q.getLocation() + " " + q.getZip());
+            // Then confirm by clicking on the dropdown    list
+            WebElement locConfirm = (new WebDriverWait(wd, 10))
+                    .until(ExpectedConditions.presenceOfNestedElementLocatedBy(By.className("location-list"), By.xpath("li[1]")));
+            locConfirm.click();
+        }
+
+        // Enter min price
+        if (q.getMinPrice() > 0) {
+            minPriceWidget.click();
+        }
+
+        // Enter max price
+
+        // Enter min area
+
+        // Enter max area
 
         // Move to Asset Types
         int offset = houseWidget.getLocation().getY();
