@@ -1,6 +1,12 @@
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -8,7 +14,29 @@ public class Searches implements MutableTreeNode{
     private Object userObject;
     private Vector<Query> elements = new Vector<>();
     private Vector<DefaultTreeModel> elementAddedListeners = new Vector<>();
+    private Vector<DefaultTreeModel> elementRemovedListeners = new Vector<>();
 
+    void load(String path){
+        File searchFile = new File(path);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            this.elements = mapper.readValue(searchFile, new TypeReference<Vector<Query>>(){});
+        } catch (FileNotFoundException e) {
+            System.out.println("Aucune recherche précédente n'a été trouvée.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void save(String path) {
+        File searchFile = new File(path);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writerWithDefaultPrettyPrinter().writeValue(searchFile, this.elements);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public void add(Query q){
         elements.add(q);
         this.notifyElementAdded(q);
@@ -27,6 +55,18 @@ public class Searches implements MutableTreeNode{
         this.elementAddedListeners.remove(listener);
     }
 
+    public void registerElementRemovedListener(DefaultTreeModel listener){
+        this.elementRemovedListeners.add(listener);
+    }
+
+    public void unregisterElementRemovedListener(DefaultTreeModel listener){
+        this.elementRemovedListeners.remove(listener);
+    }
+
+    private void notifyElementRemoved(int index, MutableTreeNode q){
+        this.elementRemovedListeners.forEach(listener -> listener.nodesWereRemoved(this, new int[] {index}, new MutableTreeNode[] {q}));
+    }
+
     @Override
     public String toString() {
         return "Mes recherches";
@@ -40,7 +80,9 @@ public class Searches implements MutableTreeNode{
 
     @Override
     public void remove(MutableTreeNode node) {
+        int index = this.getIndex(node);
         this.elements.removeElement(node);
+        notifyElementRemoved(index, node);
     }
 
     @Override

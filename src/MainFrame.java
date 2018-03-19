@@ -1,10 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class MainFrame extends JFrame {
     public MainFrame(String title) {
         super(title);
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                FantasticBassoon.closeApplication();
+            }
+        });
 
         // Menu Bar definition
         MenuBar menuBar = new MenuBar();

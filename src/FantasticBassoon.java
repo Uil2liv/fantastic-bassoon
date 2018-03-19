@@ -1,9 +1,30 @@
 import javax.swing.*;
-import java.util.ArrayList;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.MutableTreeNode;
 
-public class FantasticBassoon {
+public class FantasticBassoon{
     static MainFrame mainFrame;
     static Searches searches = new Searches();
+    private static MutableTreeNode selectedSearch;
+    static TreeSelectionListener treeSelectionListener = e -> {
+        Object node;
+        try {
+            node = e.getNewLeadSelectionPath().getLastPathComponent();
+        } catch (NullPointerException ex) {
+            node = null;
+        }
+        changeSelectedSearch((MutableTreeNode) node);
+    };
+
+    private static void changeSelectedSearch(MutableTreeNode search) {
+        selectedSearch = search;
+        if (search instanceof Removable)
+            Actions.removeSearchAction.setEnabled(true);
+        else
+            Actions.removeSearchAction.setEnabled(false);
+
+        System.out.println("Nouvelle sélection: " + search);
+    }
 
     public static void createAndShowNewSearchContext() {
         new NewSearchDialog();
@@ -11,9 +32,11 @@ public class FantasticBassoon {
 
     public static void deleteSearch() {
         System.out.println("On va supprimer une recherche.");
+        searches.remove(selectedSearch);
     }
 
     public static void closeApplication() {
+        searches.save("searches.json");
         System.exit(0);
     }
 
@@ -22,11 +45,9 @@ public class FantasticBassoon {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowMainFrame();
-            }
-        });
+        searches.load("searches.json");
+        SwingUtilities.invokeLater(FantasticBassoon::createAndShowMainFrame);
     }
 
+    interface Removable{}
 }
