@@ -12,6 +12,11 @@ public class MyClass {
         ProviderLeBonCoin lbc = new ProviderLeBonCoin(wd);
 
         Query q = new Query("DummyQuery", AssetType.House, "Guer", "56380");
+        q.setMaxPrice(123456);
+        q.setMinRoom(3);
+        q.setMaxRoom(6);
+        q.setMinArea(88);
+        q.setMaxArea(155);
 
         List<Asset> assets = lbc.Search(q);
 

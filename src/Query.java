@@ -71,7 +71,21 @@ public class Query implements MutableTreeNode, FantasticBassoon.Removable{
         this.maxArea = maxArea;
     }
 
-    // TODO: Min / Max Room Properties
+    private int minRoom;
+    public int getMinRoom() {
+        return minRoom;
+    }
+    public void setMinRoom(int minRoom) {
+        this.minRoom = minRoom;
+    }
+
+    private int maxRoom;
+    public int getMaxRoom() {
+        return maxRoom;
+    }
+    public void setMaxRoom(int maxRoom) {
+        this.maxRoom = maxRoom;
+    }
 
     // Constructor
     public Query() {}
@@ -161,4 +175,5 @@ public class Query implements MutableTreeNode, FantasticBassoon.Removable{
     public Enumeration children() {
         return null;
     }
+
 }

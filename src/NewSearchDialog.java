@@ -18,8 +18,8 @@ public class NewSearchDialog extends JDialog implements ActionListener{
     private JTextField maxPriceField;
     private JTextField minAreaField;
     private JTextField maxAreaField;
-
-    // TODO : Min / Max Room fields
+    private JTextField minRoomField;
+    private JTextField maxRoomField;
 
     public NewSearchDialog() {
         super();
@@ -75,6 +75,12 @@ public class NewSearchDialog extends JDialog implements ActionListener{
         minAreaField = new JTextField();
         maxAreaField = new JTextField();
 
+        JLabel roomLabel = new JLabel("Nombre de pièces");
+        JLabel minRoomLabel = new JLabel("min :");
+        JLabel maxRoomLabel = new JLabel("max :");
+        minRoomField = new JTextField();
+        maxRoomField = new JTextField();
+
         // Creating buttons for submitting the form
         JButton cancelButton = new JButton("Annuler");
         cancelButton.addActionListener(this);
@@ -116,6 +122,12 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 .addComponent(maxAreaField)
                 .addComponent(unitAreaLabel))
             .addGroup(layout.createSequentialGroup()
+                .addComponent(roomLabel)
+                .addComponent(minRoomLabel)
+                .addComponent(minRoomField)
+                .addComponent(maxRoomLabel)
+                .addComponent(maxRoomField))
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(cancelButton)
                 .addComponent(createButton))
         );
@@ -135,22 +147,28 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 .addComponent(typeHouse)
                 .addComponent(typeLot))
             .addGroup(layout.createParallelGroup()
-                    .addComponent(priceLabel)
-                    .addComponent(minPriceLabel)
-                    .addComponent(minPriceField)
-                    .addComponent(unitPriceLabel)
-                    .addComponent(maxPriceLabel)
-                    .addComponent(maxPriceField)
-                    .addComponent(unitPriceLabel))
+                .addComponent(priceLabel)
+                .addComponent(minPriceLabel)
+                .addComponent(minPriceField)
+                .addComponent(unitPriceLabel)
+                .addComponent(maxPriceLabel)
+                .addComponent(maxPriceField)
+                .addComponent(unitPriceLabel))
             .addGroup(layout.createParallelGroup()
-                    .addComponent(areaLabel)
-                    .addComponent(minAreaLabel)
-                    .addComponent(minAreaField)
-                    .addComponent(unitAreaLabel)
-                    .addComponent(maxAreaLabel)
-                    .addComponent(maxAreaField)
-                    .addComponent(unitAreaLabel))
-                .addGroup(layout.createParallelGroup()
+                .addComponent(areaLabel)
+                .addComponent(minAreaLabel)
+                .addComponent(minAreaField)
+                .addComponent(unitAreaLabel)
+                .addComponent(maxAreaLabel)
+                .addComponent(maxAreaField)
+                .addComponent(unitAreaLabel))
+            .addGroup(layout.createParallelGroup()
+                .addComponent(roomLabel)
+                .addComponent(minRoomLabel)
+                .addComponent(minRoomField)
+                .addComponent(maxRoomLabel)
+                .addComponent(maxRoomField))
+            .addGroup(layout.createParallelGroup()
                 .addComponent(cancelButton)
                 .addComponent(createButton))
         );
@@ -189,6 +207,16 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                     query.setMaxArea(Integer.parseInt(maxAreaField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir la surface max (" + maxAreaField.getText() + ")");
+                }
+                try {
+                    query.setMinRoom(Integer.parseInt(minRoomField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.println("Impossible de convertir le nombre de pièces min (" + minRoomField.getText() + ")");
+                }
+                try {
+                    query.setMaxRoom(Integer.parseInt(maxRoomField.getText()));
+                } catch (NumberFormatException ex) {
+                    System.out.print("Impossible de convertir le nombre de pièces max (" + maxRoomField.getText() + ")");
                 }
 
                 if (typeGroup.getSelection() == typeHouse.getModel()) {

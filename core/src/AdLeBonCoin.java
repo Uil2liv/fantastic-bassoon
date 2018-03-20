@@ -49,6 +49,8 @@ public class AdLeBonCoin extends Ad {
 
         a.setArea(Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_square\"]/div[2]")).getText().replaceAll("[^0-9]", "")));
 
+        // TODO: Retrieve Pictures
+
         wd.quit();
 
         return a;

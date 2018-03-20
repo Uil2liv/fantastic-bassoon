@@ -1,5 +1,7 @@
+import com.sun.xml.internal.ws.util.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
@@ -42,6 +44,48 @@ public class ProviderLeBonCoin implements IProvider {
 
     @Override
     public List<Asset> Search(Query q) {
+        class lbcSelect extends Select {
+            public lbcSelect(WebElement we){
+                super(we);
+            }
+
+            public void selectMaxValueLessThan(int max) {
+                String maxValue = null;
+                for (WebElement option : this.getOptions()) {
+                    int value;
+                    try {
+                        value = Integer.parseInt(option.getText().replaceAll("[^0-9]", ""));
+                        if (value <= max)
+                            maxValue = option.getAttribute("value");
+                        else
+                            break;
+                    } catch (NumberFormatException e){
+                        System.out.println("Impossible d'évaluer la valeur \"" + option.getText() + "\" comme un entier");
+                    }
+                }
+                if (maxValue != null)
+                    this.selectByValue(maxValue);
+            }
+
+            public void selectMinValueGreaterThan(int min) {
+                String minValue = null;
+                for (WebElement option : this.getOptions()) {
+                    int value;
+                    try {
+                        value = Integer.parseInt(option.getText().replaceAll("[^0-9]", ""));
+                        if (value > min) {
+                            minValue = option.getAttribute("value");
+                            break;
+                        }
+
+                    } catch (NumberFormatException e){
+                        System.out.println("Impossible d'évaluer la valeur \"" + option.getText() + "\" comme un entier");
+                    }
+                }
+                if (minValue != null)
+                    this.selectByValue(minValue);            }
+        }
+
         // Connect to the provider URL
         this.wd.get(this.url);
 
@@ -50,12 +94,12 @@ public class ProviderLeBonCoin implements IProvider {
         WebElement houseWidget = wd.findElement(By.id("ret_1"));
         WebElement lotWidget = wd.findElement(By.id("ret_3"));
         WebElement submitWidget = wd.findElement(By.id("searchbutton"));
-        WebElement minPriceWidget = wd.findElement(By.id("ps"));
-        WebElement maxPriceWidget = wd.findElement(By.id("pe"));
-        WebElement minAreaWidget = wd.findElement(By.id("sqs"));
-        WebElement maxAreaWidget = wd.findElement(By.id("sqe"));
-
-        // TODO: Min / Max Room elements
+        lbcSelect minPriceWidget = new lbcSelect(wd.findElement(By.id("ps")));
+        lbcSelect maxPriceWidget = new lbcSelect(wd.findElement(By.id("pe")));
+        lbcSelect minAreaWidget =  new lbcSelect(wd.findElement(By.id("sqs")));
+        lbcSelect maxAreaWidget =  new lbcSelect(wd.findElement(By.id("sqe")));
+        lbcSelect minRoom =  new lbcSelect(wd.findElement(By.id("rooms_ros")));
+        lbcSelect maxRoom = new lbcSelect(wd.findElement(By.id("rooms_roe")));
 
         // Enter the location criteria
         if (Boolean.parseBoolean(q.getLocation())) {
@@ -68,14 +112,33 @@ public class ProviderLeBonCoin implements IProvider {
 
         // Enter min price
         if (q.getMinPrice() > 0) {
-            minPriceWidget.click();
+            minPriceWidget.selectMaxValueLessThan(q.getMinPrice());
         }
 
         // Enter max price
+        if (q.getMaxPrice() > 0) {
+            maxPriceWidget.selectMinValueGreaterThan(q.getMaxPrice());
+        }
 
         // Enter min area
+        if (q.getMinArea() > 0) {
+            minAreaWidget.selectMaxValueLessThan(q.getMinArea());
+        }
 
         // Enter max area
+        if (q.getMaxArea() > 0) {
+            maxAreaWidget.selectMinValueGreaterThan(q.getMaxArea());
+        }
+
+        // Enter min room
+        if (q.getMinRoom() > 0) {
+            minRoom.selectMaxValueLessThan(q.getMinRoom());
+        }
+
+        // Enter max room
+        if (q.getMaxRoom() > 0) {
+            maxRoom.selectMinValueGreaterThan(q.getMaxRoom());
+        }
 
         // Move to Asset Types
         int offset = houseWidget.getLocation().getY();
@@ -108,6 +171,7 @@ public class ProviderLeBonCoin implements IProvider {
         // Click to submit the query
         submitWidget.click();
 
+        // TODO: For each page, based on object id "next", class "disabled"
         // Create an Asset instance for each asset displayed on the page
         List<Asset> Assets = new ArrayList<Asset>();
         List<WebElement> assetElements = (new WebDriverWait(wd, 10))
@@ -127,20 +191,7 @@ public class ProviderLeBonCoin implements IProvider {
             Asset a = ad.getAsset();
 
             Assets.add(a);
-/*            String name = el.findElement(By.tagName("a")).getAttribute("title");
-
-            int price = Integer.parseInt(el.findElement(By.xpath(".//h3[@itemprop=\"price\"]")).getAttribute("content"));
-
-            URL assetUrl = null;
-            try {
-                assetUrl = new URL(el.findElement(By.tagName("a")).getAttribute("href"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            Assets.add(new Asset(name, price, assetUrl));*/
         }
-
 
         return Assets;
     }
