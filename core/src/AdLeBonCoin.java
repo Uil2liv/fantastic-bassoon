@@ -1,4 +1,6 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -20,11 +22,6 @@ public class AdLeBonCoin extends Ad {
         a.setUrl(url);
 
         a.setName(wd.findElement(By.xpath("//*[@data-qa-id=\"adview_title\"]/h1")).getText());
-        String price = wd.findElement(By.xpath("//*[@data-qa-id=\"adview_price\"]/div/span")).getAttribute("innerText");
-        System.out.println("Element text: " + price);
-        System.out.println("Element cleant: " + price.replaceAll("[^0-9]", ""));
-        System.out.println("Element int: " + Integer.parseInt(price.replaceAll("[^0-9]", "")));
-
         a.setPrice(Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"adview_price\"]/div/span"))
                 .getAttribute("innerText").replaceAll("[^0-9]", "")));
 
@@ -49,7 +46,23 @@ public class AdLeBonCoin extends Ad {
 
         a.setArea(Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_square\"]/div[2]")).getText().replaceAll("[^0-9]", "")));
 
-        // TODO: Retrieve Pictures
+        try {
+            a.setGES(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_ges\"]/div[2]")).getText().substring(0, 1));
+        } catch (NoSuchElementException e) {
+            System.out.println("Pas de GES trouvée.");
+        }
+
+        try {
+            a.setEnergyClass(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_energy_rate\"]/div[2]")).getText().substring(0, 1));
+        } catch (NoSuchElementException e) {
+            System.out.println("Pas de classe énergétique trouvée.");
+        }
+
+        // Click on the slideshow to display all the pictures
+        wd.findElement(By.xpath("//*[@data-qa-id=\"slideshow_container\"]/div[1]/div[1]/div[1]/div[1]/div[2]/img")).click();
+        for (WebElement webElement : wd.findElements(By.xpath("//*[@data-qa-id=\"lightbox_item\"]/img"))) {
+            a.addPicture(webElement.getAttribute("src"));
+        }
 
         wd.quit();
 

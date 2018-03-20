@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ProviderLeBonCoin implements IProvider {
     private WebDriver wd;
@@ -73,7 +74,7 @@ public class ProviderLeBonCoin implements IProvider {
                     int value;
                     try {
                         value = Integer.parseInt(option.getText().replaceAll("[^0-9]", ""));
-                        if (value > min) {
+                        if (value >= min) {
                             minValue = option.getAttribute("value");
                             break;
                         }
@@ -102,7 +103,7 @@ public class ProviderLeBonCoin implements IProvider {
         lbcSelect maxRoom = new lbcSelect(wd.findElement(By.id("rooms_roe")));
 
         // Enter the location criteria
-        if (Boolean.parseBoolean(q.getLocation())) {
+        if (!q.getLocation().equals("")) {
             locWidget.sendKeys(q.getLocation() + " " + q.getZip());
             // Then confirm by clicking on the dropdown    list
             WebElement locConfirm = (new WebDriverWait(wd, 10))
@@ -171,28 +172,47 @@ public class ProviderLeBonCoin implements IProvider {
         // Click to submit the query
         submitWidget.click();
 
-        // TODO: For each page, based on object id "next", class "disabled"
-        // Create an Asset instance for each asset displayed on the page
-        List<Asset> Assets = new ArrayList<Asset>();
-        List<WebElement> assetElements = (new WebDriverWait(wd, 10))
-                .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@id=\"listingAds\"]/section/section/ul/li")));
-        List<Ad> ads = new ArrayList<Ad>();
+        // Create an array to store all returned assets
+        List<Asset> Assets = new ArrayList<>();
+        Boolean isLastPage = false;
+        // for each page
+        while (!isLastPage) {
+            // Create an Asset instance for each asset displayed on the page
+            List<WebElement> assetElements = (new WebDriverWait(wd, 10))
+                    .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@id=\"listingAds\"]/section/section/ul/li")));
+            List<Ad> ads = new ArrayList<Ad>();
 
-        for (WebElement el : assetElements) {
-            URL adUrl = null;
-            try {
-                adUrl = new URL(el.findElement(By.tagName("a")).getAttribute("href"));
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+            for (WebElement el : assetElements) {
+                URL adUrl = null;
+                try {
+                    adUrl = new URL(el.findElement(By.tagName("a")).getAttribute("href"));
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                Ad ad = new AdLeBonCoin(adUrl);
+
+                Asset a = ad.getAsset();
+
+                Assets.add(a);
             }
 
-            Ad ad = new AdLeBonCoin(adUrl);
+            // set the flag if the last page is reached
+            try {
+                WebElement nextPageWidget = wd.findElement(By.id("next"));
+                if (nextPageWidget.getAttribute("class").contains("disabled")) {
+                    isLastPage = true;
+                } else {
+                    this.ScrollTo(nextPageWidget.getLocation().y);
+                    nextPageWidget.click();
+                }
+            } catch (org.openqa.selenium.NoSuchElementException e) {
+                isLastPage = true;
+            }
 
-            Asset a = ad.getAsset();
-
-            Assets.add(a);
         }
 
+        wd.quit();
         return Assets;
     }
 }

@@ -1,5 +1,6 @@
 import java.net.URL;
 import java.util.Date;
+import java.util.Vector;
 
 public class Asset {
     // Properties
@@ -65,6 +66,27 @@ public class Asset {
     }
     public void setArea(int area) {
         this.area = area;
+    }
+
+    private String GES;
+    public String getGES() {
+        return GES;
+    }
+    public void setGES(String GES) {
+        this.GES = GES;
+    }
+
+    private String energyClass;
+    public String getEnergyClass() {
+        return energyClass;
+    }
+    public void setEnergyClass(String energyClass) {
+        this.energyClass = energyClass;
+    }
+
+    private Vector<String> pictures = new Vector<>();
+    public void addPicture(String picture) {
+        pictures.add(picture);
     }
 
     // Constructor

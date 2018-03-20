@@ -12,7 +12,8 @@ public class MyClass {
         ProviderLeBonCoin lbc = new ProviderLeBonCoin(wd);
 
         Query q = new Query("DummyQuery", AssetType.House, "Guer", "56380");
-        q.setMaxPrice(123456);
+        q.setMinPrice(100000);
+        q.setMaxPrice(300000);
         q.setMinRoom(3);
         q.setMaxRoom(6);
         q.setMinArea(88);
@@ -24,6 +25,10 @@ public class MyClass {
             System.out.println(a.getName() + ": " + a.getPrice() + "€ -> " + a.getUrl().toString());
             System.out.println(a.getDate());
             System.out.println(a.getArea() + "m² - " + a.getNbRooms() + " pièces");
+            if (a.getGES() != null)
+                System.out.println("Classe GES: " + a.getGES());
+            if (a.getEnergyClass() != null)
+                System.out.println("Classe Energie: " + a.getEnergyClass());
             System.out.println("Description:");
             System.out.println(a.getDescription());
             System.out.println();
