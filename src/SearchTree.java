@@ -21,10 +21,4 @@ public class SearchTree extends JTree {
         FantasticBassoon.searches.registerElementRemovedListener(model);
         model.setRoot(root);
     }
-
-/*
-    public void addSearch(String search) {
-        this.root.add(new MutableTreeNode(search));
-    }
-*/
 }

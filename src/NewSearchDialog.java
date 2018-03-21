@@ -225,7 +225,7 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                     query.setType(AssetType.Lot);
                 }
 
-                FantasticBassoon.searches.add(query);
+                FantasticBassoon.searches.add(new Search(query));
                 dispose();
                 break;
         }

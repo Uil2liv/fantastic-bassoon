@@ -11,8 +11,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 public class Searches implements MutableTreeNode{
-    private Object userObject;
-    private Vector<Query> elements = new Vector<>();
+    private Vector<TreeNode> elements = new Vector<>();
     private Vector<DefaultTreeModel> elementAddedListeners = new Vector<>();
     private Vector<DefaultTreeModel> elementRemovedListeners = new Vector<>();
 
@@ -20,7 +19,7 @@ public class Searches implements MutableTreeNode{
         File searchFile = new File(path);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            this.elements = mapper.readValue(searchFile, new TypeReference<Vector<Query>>(){});
+            this.elements = mapper.readValue(searchFile, new TypeReference<Vector<Search>>(){});
         } catch (FileNotFoundException e) {
             System.out.println("Aucune recherche précédente n'a été trouvée.");
         } catch (IOException e) {
@@ -37,13 +36,13 @@ public class Searches implements MutableTreeNode{
             e.printStackTrace();
         }
     }
-    public void add(Query q){
-        elements.add(q);
-        this.notifyElementAdded(q);
+    public void add(Search search){
+        elements.add(search);
+        this.notifyElementAdded(search);
     }
 
-    private void notifyElementAdded(Query q){
-        int index = this.getIndex(q);
+    private void notifyElementAdded(Search search){
+        int index = this.getIndex(search);
         this.elementAddedListeners.forEach(listener -> listener.nodesWereInserted(this, new int[] {index}));
     }
 
@@ -75,7 +74,7 @@ public class Searches implements MutableTreeNode{
     // MutableTreeNode Implementation
     @Override
     public void insert(MutableTreeNode child, int index) {
-        this.elements.insertElementAt((Query) child, index);
+        this.elements.insertElementAt(child, index);
     }
 
     @Override
@@ -92,7 +91,7 @@ public class Searches implements MutableTreeNode{
 
     @Override
     public void setUserObject(Object object) {
-        this.userObject = object;
+
     }
 
     @Override

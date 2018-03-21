@@ -22,8 +22,6 @@ public class FantasticBassoon{
             Actions.removeSearchAction.setEnabled(true);
         else
             Actions.removeSearchAction.setEnabled(false);
-
-        System.out.println("Nouvelle sélection: " + search);
     }
 
     public static void createAndShowNewSearchContext() {
@@ -31,7 +29,6 @@ public class FantasticBassoon{
     }
 
     public static void deleteSearch() {
-        System.out.println("On va supprimer une recherche.");
         searches.remove(selectedSearch);
     }
 
