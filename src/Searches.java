@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 
-public class Searches implements MutableTreeNode{
+public class Searches implements MutableTreeNode, FantasticBassoon.Refreshable{
     private Vector<TreeNode> elements = new Vector<>();
     private Vector<DefaultTreeModel> elementAddedListeners = new Vector<>();
     private Vector<DefaultTreeModel> elementRemovedListeners = new Vector<>();
@@ -36,9 +36,14 @@ public class Searches implements MutableTreeNode{
             e.printStackTrace();
         }
     }
+
     public void add(Search search){
         elements.add(search);
         this.notifyElementAdded(search);
+    }
+
+    public void refresh() {
+
     }
 
     private void notifyElementAdded(Search search){

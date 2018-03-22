@@ -1,10 +1,18 @@
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.MutableTreeNode;
+import java.util.Vector;
 
 public class FantasticBassoon{
     static MainFrame mainFrame;
     static Searches searches = new Searches();
+    static Vector<Provider> providers;
+    static {
+        for (Provider.Type provider : Provider.Type.values()){
+            providers.add(Provider.getProvider(provider));
+        }
+    }
+
     private static MutableTreeNode selectedSearch;
     static TreeSelectionListener treeSelectionListener = e -> {
         Object node;
@@ -37,6 +45,10 @@ public class FantasticBassoon{
         System.exit(0);
     }
 
+    public static void refresh() {
+        ((Refreshable)selectedSearch).refresh();
+    }
+
     private static void createAndShowMainFrame() {
         mainFrame = new MainFrame("fantastic-bassoon");
     }
@@ -47,4 +59,8 @@ public class FantasticBassoon{
     }
 
     interface Removable{}
+
+    interface Refreshable {
+        void refresh();
+    }
 }

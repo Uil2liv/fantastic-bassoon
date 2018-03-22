@@ -1,4 +1,3 @@
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -15,6 +14,9 @@ public class Actions {
     static AbstractAction removeSearchAction = createAction("Delete", "Supprimer",
             "Supprimer la recherche sélectionnée", FantasticBassoon::deleteSearch,
             KeyStroke.getKeyStroke((char) KeyEvent.VK_DELETE), KeyEvent.VK_S, false);
+    static AbstractAction refreshSearchAction = createAction("Refresh", "Rafraîchir",
+            "Rafraîchir les données", FantasticBassoon::refresh,
+            KeyStroke.getKeyStroke((char) KeyEvent.VK_F5), KeyEvent.VK_R);
 
     static private AbstractAction createAction(String icon, String altText, String toolTip, Runnable func,
                                                KeyStroke shortcut, int mnemonic){

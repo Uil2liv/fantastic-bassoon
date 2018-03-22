@@ -5,7 +5,7 @@ import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
 import java.util.Vector;
 
-public class Search implements MutableTreeNode, FantasticBassoon.Removable{
+public class Search implements MutableTreeNode, FantasticBassoon.Removable, FantasticBassoon.Refreshable{
     private Query query;
     public Query getQuery() {
         return query;
@@ -95,5 +95,12 @@ public class Search implements MutableTreeNode, FantasticBassoon.Removable{
     @Override
     public Enumeration children() {
         return null;
+    }
+
+    // Implements Refreshable
+    public void refresh() {
+        for (Provider provider : FantasticBassoon.providers) {
+            provider.search(query);
+        }
     }
 }
