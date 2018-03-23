@@ -20,4 +20,6 @@ public class Query {
     // Constructor
     Query() { }
 
+    // Methods
+    public String toString() { return (String)this.fields.get(Keys.Name);}
 }

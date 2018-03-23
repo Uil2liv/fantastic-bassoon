@@ -43,7 +43,7 @@ public class Searches implements MutableTreeNode, FantasticBassoon.Refreshable{
     }
 
     public void refresh() {
-
+        // TODO Implement Search for all items in elements
     }
 
     private void notifyElementAdded(Search search){

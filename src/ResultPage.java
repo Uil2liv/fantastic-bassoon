@@ -4,34 +4,34 @@ import org.openqa.selenium.WebElement;
 import java.util.Vector;
 
 abstract class ResultPage extends Page {
+    protected final ProviderFactory factory;
     protected WebElement nextPageWidget;
 
-    public ResultPage(WebDriver wd) {
+    ResultPage(WebDriver wd, ProviderFactory factory) {
         super(wd);
-        getNextPageWidget();
+        this.factory = factory;
+        this.nextPageWidget = getNextPageWidget();
     }
 
     protected abstract WebElement getNextPageWidget();
 
-    public AssetsList getAssets() {
+    public Vector<Asset> getAssets() {
         Vector<Asset> assets = new Vector<>();
         Vector<Ad> ads = getAds();
         ads.forEach(ad -> assets.add(ad.getAsset()));
 
-        if (nextPageWidget == null) {
-            return assets;
-        } else {
-            nextPageWidget.click();
-            return assets.addAll();
+        if (nextPageWidget != null) {
+            ResultPage nextPage = goToNextPage();
+            assets.addAll(nextPage.getAssets());
         }
+
+        return assets;
     }
 
-    private Vector<Ad> getAds() {
-        // TODO implement get ads
-    }
+    abstract protected Vector<Ad> getAds();
 
     private ResultPage goToNextPage() {
         nextPageWidget.click();
-        return new ResultPage(wd);
+        return factory.createResultPage(wd);
     }
 }

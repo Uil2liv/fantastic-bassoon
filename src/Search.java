@@ -22,7 +22,7 @@ public class Search implements MutableTreeNode, FantasticBassoon.Removable, Fant
     }
 
     public String toString() {
-        return this.query.getName();
+        return this.query.toString();
     }
 
     // Implements MutableTreeNode
