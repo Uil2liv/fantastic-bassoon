@@ -15,7 +15,7 @@ public class Query {
         MaxRoom,
     }
 
-    EnumMap fields = new EnumMap(Keys.class);
+    EnumMap<Query.Keys, Object> fields = new EnumMap<>(Keys.class);
 
     // Constructor
     Query() { }

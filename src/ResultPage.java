@@ -21,8 +21,8 @@ abstract class ResultPage extends Page {
         ads.forEach(ad -> assets.add(ad.getAsset()));
 
         if (nextPageWidget != null) {
-            ResultPage nextPage = goToNextPage();
-            assets.addAll(nextPage.getAssets());
+            goToNextPage();
+            assets.addAll(getAssets());
         }
 
         return assets;
@@ -30,8 +30,7 @@ abstract class ResultPage extends Page {
 
     abstract protected Vector<Ad> getAds();
 
-    private ResultPage goToNextPage() {
+    private void goToNextPage() {
         nextPageWidget.click();
-        return factory.createResultPage(wd);
     }
 }

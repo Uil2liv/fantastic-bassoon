@@ -20,6 +20,7 @@ public class LeBonCoinResultPage extends ResultPage {
 
     @Override
     protected Vector<Ad> getAds() {
-
+        // TODO Implement getAds();
+        return null;
     }
 }

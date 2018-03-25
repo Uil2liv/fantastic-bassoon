@@ -13,7 +13,8 @@ public abstract class FormPage extends Page {
         factory = pf;
     }
 
-    public void access(WebDriver wd){
+    @Override
+    public void access(){
         wd.get(url.toString());
         fields = getFields();
         submitWidget = getSubmitWidget();
@@ -24,12 +25,15 @@ public abstract class FormPage extends Page {
     protected abstract WebElement getSubmitWidget();
 
     public void fill(Query q){
-        fields.keySet().forEach( key -> fields.get(key).fill(q.fields.get(key)));
+        for (Query.Keys fieldKey : fields.keySet()){
+            if (q.fields.containsKey(fieldKey))
+                fields.get(fieldKey).fill(q.fields.get(fieldKey));
+        }
     }
 
     public ResultPage submit() {
         this.submitWidget.click();
 
-        return factory.createResultPage(wd);
+        return factory.createResultPage();
     }
 }

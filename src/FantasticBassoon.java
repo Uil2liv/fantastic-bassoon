@@ -8,8 +8,8 @@ public class FantasticBassoon{
     static Searches searches = new Searches();
     static Vector<Provider> providers;
     static {
-        for (Provider.Type provider : Provider.Type.values()){
-            providers.add(Provider.getProvider(provider));
+        for (ProviderFactory.Providers provider : ProviderFactory.Providers.values()){
+            providers.add(new Provider(provider));
         }
     }
 

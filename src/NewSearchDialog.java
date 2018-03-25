@@ -185,6 +185,7 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 break;
             case "CREATE" :
                 Query query = new Query();
+/*
                 query.setName(searchNameField.getText());
                 query.setLocation(cityField.getText());
                 query.setZip(zipField.getText());
@@ -224,6 +225,7 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 } else if (typeGroup.getSelection() == typeLot.getModel()) {
                     query.setType(AssetType.Lot);
                 }
+*/
 
                 FantasticBassoon.searches.add(new Search(query));
                 dispose();

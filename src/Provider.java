@@ -1,23 +1,18 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.Vector;
 
-public abstract class Provider {
+public class Provider {
     protected FormPage formPage;
-    protected String searchFormUrl;
     protected ProviderFactory factory;
 
-    public Provider(ProviderFactory.Providers provider, String searchFormUrl){
+    public Provider(ProviderFactory.Providers provider){
         this.factory = ProviderFactory.createFactory(provider);
-        this.searchFormUrl = searchFormUrl;
     }
 
-    public AssetsList search(Query q){
-        WebDriver wd = new ChromeDriver();
-        formPage = factory.createFormPage(searchFormUrl, wd);
+    public Vector<Asset> search(Query q){
+        formPage = factory.createFormPage();
         formPage.access();
         formPage.fill(q);
         ResultPage resultPage = formPage.submit();
-        AssetsList assets = resultPage.getAssets();
-        return assets;
+        return resultPage.getAssets();
     }
 }
