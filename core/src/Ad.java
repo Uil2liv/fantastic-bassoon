@@ -3,7 +3,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.net.URL;
 
-abstract class Ad {
+abstract class Ad_old {
     // Properties
     protected WebDriver wd;
     protected URL url;

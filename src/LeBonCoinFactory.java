@@ -8,4 +8,9 @@ public class LeBonCoinFactory extends ProviderFactory {
     public FormPage createFormPage() {
         return new LeBonCoinFormPage(wd, this);
     }
+
+    @Override
+    public Ad createAd(String url) {
+        return new LeBonCoinAd(url);
+    }
 }

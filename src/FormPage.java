@@ -27,11 +27,13 @@ public abstract class FormPage extends Page {
     public void fill(Query q){
         for (Query.Keys fieldKey : fields.keySet()){
             if (q.fields.containsKey(fieldKey))
+                ScrollTo(fields.get(fieldKey).we.getLocation().getY());
                 fields.get(fieldKey).fill(q.fields.get(fieldKey));
         }
     }
 
     public ResultPage submit() {
+        ScrollTo(this.submitWidget.getLocation().getY());
         this.submitWidget.click();
 
         return factory.createResultPage();

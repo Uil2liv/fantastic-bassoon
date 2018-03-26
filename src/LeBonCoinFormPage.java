@@ -22,8 +22,13 @@ public class LeBonCoinFormPage extends FormPage {
         fields.put(Query.Keys.MaxArea, new SelectGTEField(wd.findElement(By.id("sqe"))));
         fields.put(Query.Keys.MinPrice, new SelectLTEField(wd.findElement(By.id("ps"))));
         fields.put(Query.Keys.MaxPrice, new SelectGTEField(wd.findElement(By.id("pe"))));
-        fields.put(Query.Keys.MinRoom, new SelectLTEField(wd.findElement(By.id("ros"))));
-        fields.put(Query.Keys.MaxRoom, new SelectGTEField(wd.findElement(By.id("roe"))));
+        fields.put(Query.Keys.MinRoom, new SelectLTEField(wd.findElement(By.id("rooms_ros"))));
+        fields.put(Query.Keys.MaxRoom, new SelectGTEField(wd.findElement(By.id("rooms_roe"))));
+
+        EnumMap<AssetType, WebElement> boxes = new EnumMap<>(AssetType.class);
+        boxes.put(AssetType.House, wd.findElement(By.id("ret_1")));
+        boxes.put(AssetType.Lot, wd.findElement(By.id("ret_3")));
+        fields.put(Query.Keys.Type, new CheckBoxField(wd.findElement(By.id("real_estate_type")), boxes));
 
         return fields;
     }

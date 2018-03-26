@@ -1,5 +1,6 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.Vector;
 
@@ -18,6 +19,7 @@ abstract class ResultPage extends Page {
     public Vector<Asset> getAssets() {
         Vector<Asset> assets = new Vector<>();
         Vector<Ad> ads = getAds();
+
         ads.forEach(ad -> assets.add(ad.getAsset()));
 
         if (nextPageWidget != null) {
@@ -32,5 +34,6 @@ abstract class ResultPage extends Page {
 
     private void goToNextPage() {
         nextPageWidget.click();
+        this.nextPageWidget = getNextPageWidget();
     }
 }

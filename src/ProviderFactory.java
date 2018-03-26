@@ -24,4 +24,6 @@ public abstract class ProviderFactory {
     abstract public ResultPage createResultPage();
 
     abstract public FormPage createFormPage();
+
+    abstract public Ad createAd(String url);
 }

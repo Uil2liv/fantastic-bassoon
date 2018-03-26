@@ -1,6 +1,8 @@
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.EnumMap;
+
 abstract class Field {
     WebElement we;
 
@@ -81,5 +83,22 @@ class SelectGTEField extends Field {
     @Override
     public void fill(Object o) {
         selectMinValueGreaterThan(this.we, (int)o);
+    }
+}
+
+class CheckBoxField extends Field {
+    private EnumMap<AssetType, WebElement> boxes;
+
+    CheckBoxField(WebElement we, EnumMap<AssetType, WebElement> boxes) {
+        super(we);
+        this.boxes = boxes;
+    }
+
+    @Override
+    public void fill(Object o) {
+        for (AssetType boxKey : boxes.keySet()){
+            if (boxes.get(boxKey).isSelected() != (boxKey == o))
+                boxes.get(boxKey).click();
+        }
     }
 }
