@@ -37,6 +37,7 @@ public class LeBonCoinFormPage extends FormPage {
     public void fill(Query q) {
         for (Query.Keys fieldKey : fields.keySet()){
             if (q.fields.containsKey(fieldKey)) {
+                ScrollTo(fields.get(fieldKey).we.getLocation().getY());
                 switch (fieldKey) {
                     case Location:
                         // Concatenate City and Zip Code in the location field

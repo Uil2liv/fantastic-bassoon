@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 public class Tests {
     public static void main(String[] args){
         // Set path to Chrome Webdriver
@@ -12,6 +14,7 @@ public class Tests {
         //q.fields.put(Query.Keys.MaxArea, 234);
         q.fields.put(Query.Keys.Type, AssetType.House);
 
-        p.search(q);
+        Vector<Asset> assets = p.search(q);
+        System.out.println(assets);
     }
 }

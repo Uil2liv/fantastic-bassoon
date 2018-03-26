@@ -4,7 +4,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.EnumMap;
 
 public abstract class Ad extends Page{
-    protected EnumMap<AdField, String> fields = new EnumMap<>(AdField.class);
+    protected EnumMap<AdField, Object> fields = new EnumMap<>(AdField.class);
 
     public Ad(String url) {
         super(url);

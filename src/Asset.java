@@ -1,9 +1,9 @@
 import java.util.EnumMap;
 
 public class Asset {
-    private EnumMap<Ad.AdField, String> fields = new EnumMap<>(Ad.AdField.class);
+    private EnumMap<Ad.AdField, Object> fields = new EnumMap<>(Ad.AdField.class);
 
-    public void add(Ad.AdField field, String value) {
+    public void add(Ad.AdField field, Object value) {
         this.fields.put(field, value);
     }
 }
