@@ -6,11 +6,7 @@ public abstract class ProviderFactory {
         LeBonCoin
     }
 
-    protected WebDriver wd;
-
-    ProviderFactory() {
-        wd = new ChromeDriver();
-    }
+    ProviderFactory() { }
 
     static public ProviderFactory createFactory(Providers p){
         switch (p) {
@@ -21,9 +17,9 @@ public abstract class ProviderFactory {
         }
     }
 
-    abstract public ResultPage createResultPage();
+    abstract public ResultPage createResultPage(WebDriver wd);
 
-    abstract public FormPage createFormPage();
+    abstract public FormPage createFormPage(WebDriver wd);
 
     abstract public Ad createAd(String url);
 }

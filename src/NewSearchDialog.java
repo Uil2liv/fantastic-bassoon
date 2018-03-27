@@ -49,10 +49,10 @@ public class NewSearchDialog extends JDialog implements ActionListener{
 
         // Creating fields for search criteria
         JLabel cityLabel = new JLabel("Ville :");
-        cityField = new JTextField();
+        cityField = new JTextField(10);
 
         JLabel zipLabel = new JLabel("Code Postal :");
-        zipField = new JTextField();
+        zipField = new JTextField(5);
 
         JLabel typeLabel = new JLabel("Type de bien :");
         typeHouse = new JRadioButton("Maison");
@@ -65,21 +65,21 @@ public class NewSearchDialog extends JDialog implements ActionListener{
         JLabel minPriceLabel = new JLabel("min :");
         JLabel maxPriceLabel = new JLabel("max :");
         JLabel unitPriceLabel = new JLabel("€");
-        minPriceField = new JTextField();
-        maxPriceField = new JTextField();
+        minPriceField = new JTextField(6);
+        maxPriceField = new JTextField(6);
 
         JLabel areaLabel = new JLabel("Surface");
         JLabel minAreaLabel = new JLabel("min :");
         JLabel maxAreaLabel = new JLabel("max :");
         JLabel unitAreaLabel = new JLabel("m²");
-        minAreaField = new JTextField();
-        maxAreaField = new JTextField();
+        minAreaField = new JTextField(4);
+        maxAreaField = new JTextField(4);
 
         JLabel roomLabel = new JLabel("Nombre de pièces");
         JLabel minRoomLabel = new JLabel("min :");
         JLabel maxRoomLabel = new JLabel("max :");
-        minRoomField = new JTextField();
-        maxRoomField = new JTextField();
+        minRoomField = new JTextField(2);
+        maxRoomField = new JTextField(2);
 
         // Creating buttons for submitting the form
         JButton cancelButton = new JButton("Annuler");
@@ -185,47 +185,50 @@ public class NewSearchDialog extends JDialog implements ActionListener{
                 break;
             case "CREATE" :
                 Query query = new Query();
-/*
-                query.setName(searchNameField.getText());
-                query.setLocation(cityField.getText());
-                query.setZip(zipField.getText());
+
+                query.add(Query.Keys.Name, searchNameField.getText());
+                query.add(Query.Keys.Location, cityField.getText());
+                query.add(Query.Keys.Zip, zipField.getText());
+
                 try {
-                    query.setMinPrice(Integer.parseInt(minPriceField.getText()));
+                    query.add(Query.Keys.MinPrice,Integer.parseInt(minPriceField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir le prix min (" + minPriceField.getText() + ")");
                 }
+
                 try {
-                    query.setMaxPrice(Integer.parseInt(maxPriceField.getText()));
+                    query.add(Query.Keys.MaxPrice, Integer.parseInt(maxPriceField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir le prix max (" + maxPriceField.getText() + ")");
                 }
+
                 try {
-                    query.setMinArea(Integer.parseInt(minAreaField.getText()));
+                    query.add(Query.Keys.MinArea, Integer.parseInt(minAreaField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir la surface min (" + minAreaField.getText() + ")");
                 }
+
                 try {
-                    query.setMaxArea(Integer.parseInt(maxAreaField.getText()));
+                    query.add(Query.Keys.MaxArea, Integer.parseInt(maxAreaField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir la surface max (" + maxAreaField.getText() + ")");
                 }
                 try {
-                    query.setMinRoom(Integer.parseInt(minRoomField.getText()));
+                    query.add(Query.Keys.MinRoom, Integer.parseInt(minRoomField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.println("Impossible de convertir le nombre de pièces min (" + minRoomField.getText() + ")");
                 }
                 try {
-                    query.setMaxRoom(Integer.parseInt(maxRoomField.getText()));
+                    query.add(Query.Keys.MaxRoom, Integer.parseInt(maxRoomField.getText()));
                 } catch (NumberFormatException ex) {
                     System.out.print("Impossible de convertir le nombre de pièces max (" + maxRoomField.getText() + ")");
                 }
 
                 if (typeGroup.getSelection() == typeHouse.getModel()) {
-                    query.setType(AssetType.House);
+                    query.add(Query.Keys.Type, AssetType.House);
                 } else if (typeGroup.getSelection() == typeLot.getModel()) {
-                    query.setType(AssetType.Lot);
+                    query.add(Query.Keys.Type, AssetType.Lot);
                 }
-*/
 
                 FantasticBassoon.searches.add(new Search(query));
                 dispose();

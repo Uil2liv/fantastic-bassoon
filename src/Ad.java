@@ -22,9 +22,6 @@ public abstract class Ad extends Page{
         }
         wd.quit();
 
-        // TODO: Implement EnumMap for storing values
-        //       the getAsset method should use that map to create the asset
-        //       An abstract method to retrieve the fields must be added
         return asset;
     }
 

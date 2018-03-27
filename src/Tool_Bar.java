@@ -6,5 +6,6 @@ public class Tool_Bar extends JToolBar{
 
         this.add(Actions.newSearchAction);
         this.add(Actions.removeSearchAction);
+        this.add(Actions.refreshSearchAction);
     }
 }

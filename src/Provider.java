@@ -1,3 +1,6 @@
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
 import java.util.Vector;
 
 public class Provider {
@@ -9,7 +12,8 @@ public class Provider {
     }
 
     public Vector<Asset> search(Query q){
-        formPage = factory.createFormPage();
+        WebDriver wd = new ChromeDriver();
+        formPage = factory.createFormPage(wd);
         formPage.access();
         formPage.fill(q);
         ResultPage resultPage = formPage.submit();

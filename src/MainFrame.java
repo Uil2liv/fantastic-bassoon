@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -35,19 +36,26 @@ public class MainFrame extends JFrame {
         splitPane.setLeftComponent(searchTree);
         searchTree.expandRow(0);
 
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setPreferredSize(new Dimension(800,0));
-        tabbedPane.addTab("Recherche 1", new JPanel());
-        tabbedPane.addTab("Recherche 2", new JPanel());
-        tabbedPane.addTab("Recherche 3", new JPanel());
+        JSplitPane contentPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        contentPane.setPreferredSize(new Dimension(800, 0));
 
-        splitPane.setRightComponent(tabbedPane);
+
+        String[] columnNames = {"Titre", "Prix", "Date"};
+        Object[][] data = {{"Annonce 1", "125 000€", "12/02/2018"},
+                {"Annonce 2", "216 000€", "24/02/2018"},
+                {"Annonce 3", "111 000€", "05/03/2018"}};
+        AssetTable searchContent = new AssetTable(new AssetTableModel());
+        JScrollPane scrollPane = new JScrollPane(searchContent);
+        searchContent.setFillsViewportHeight(true);
+        scrollPane.setPreferredSize(new Dimension(0, 200));
+        contentPane.setTopComponent(scrollPane);
+
+        JPanel emptyPanel = new JPanel();
+        contentPane.setBottomComponent(emptyPanel);
+
+        splitPane.setRightComponent(contentPane);
 
         panel.add(splitPane, BorderLayout.CENTER);
-
-        // Attach Action Listener
-
-
 
         this.pack();
         this.setVisible(true);

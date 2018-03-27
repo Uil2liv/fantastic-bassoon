@@ -100,7 +100,7 @@ public class Search implements MutableTreeNode, FantasticBassoon.Removable, Fant
     // Implements Refreshable
     public void refresh() {
         for (Provider provider : FantasticBassoon.providers) {
-            provider.search(query);
+            assets.addAll(provider.search(query));
         }
     }
 }

@@ -1,11 +1,13 @@
+import org.openqa.selenium.WebDriver;
+
 public class LeBonCoinFactory extends ProviderFactory {
     @Override
-    public ResultPage createResultPage() {
+    public ResultPage createResultPage(WebDriver wd) {
         return new LeBonCoinResultPage(wd, this);
     }
 
     @Override
-    public FormPage createFormPage() {
+    public FormPage createFormPage(WebDriver wd) {
         return new LeBonCoinFormPage(wd, this);
     }
 

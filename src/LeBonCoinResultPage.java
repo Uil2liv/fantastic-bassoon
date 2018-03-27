@@ -1,4 +1,5 @@
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,16 +15,20 @@ public class LeBonCoinResultPage extends ResultPage {
 
     @Override
     protected WebElement getNextPageWidget() {
-        WebElement widget = wd.findElement(By.id("next"));
-        if (widget.getAttribute("class").contains("disabled"))
+        WebElement widget;
+
+        try {
+            widget = wd.findElement(By.id("next"));
+            assert  (!widget.getAttribute("class").contains("disabled"));
+        } catch (NoSuchElementException | AssertionError e) {
             return null;
-        else
-            return widget;
+        }
+
+        return widget;
     }
 
     @Override
     protected Vector<Ad> getAds() {
-        // TODO Implement getAds();
         Vector<Ad> ads = new Vector<>();
 
         for (WebElement we : (new WebDriverWait(wd, 10).until(ExpectedConditions

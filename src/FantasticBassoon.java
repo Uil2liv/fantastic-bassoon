@@ -1,12 +1,13 @@
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.MutableTreeNode;
+import java.net.URL;
 import java.util.Vector;
 
 public class FantasticBassoon{
     static MainFrame mainFrame;
     static Searches searches = new Searches();
-    static Vector<Provider> providers;
+    static Vector<Provider> providers = new Vector<>();
     static {
         for (ProviderFactory.Providers provider : ProviderFactory.Providers.values()){
             providers.add(new Provider(provider));
@@ -55,6 +56,11 @@ public class FantasticBassoon{
 
     public static void main(String[] args) {
         searches.load("searches.json");
+
+        // Set path to Chrome Webdriver
+        URL webDriverPath = FantasticBassoon.class.getResource("chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", webDriverPath.getPath());
+
         SwingUtilities.invokeLater(FantasticBassoon::createAndShowMainFrame);
     }
 

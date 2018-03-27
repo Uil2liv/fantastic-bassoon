@@ -36,6 +36,6 @@ public abstract class FormPage extends Page {
         ScrollTo(this.submitWidget.getLocation().getY());
         this.submitWidget.click();
 
-        return factory.createResultPage();
+        return factory.createResultPage(wd);
     }
 }
