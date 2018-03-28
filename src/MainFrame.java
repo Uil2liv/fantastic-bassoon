@@ -40,11 +40,8 @@ public class MainFrame extends JFrame {
         contentPane.setPreferredSize(new Dimension(800, 0));
 
 
-        String[] columnNames = {"Titre", "Prix", "Date"};
-        Object[][] data = {{"Annonce 1", "125 000€", "12/02/2018"},
-                {"Annonce 2", "216 000€", "24/02/2018"},
-                {"Annonce 3", "111 000€", "05/03/2018"}};
         AssetTable searchContent = new AssetTable(new AssetTableModel());
+        searchContent.getModel().addTableModelListener(searchContent);
         JScrollPane scrollPane = new JScrollPane(searchContent);
         searchContent.setFillsViewportHeight(true);
         scrollPane.setPreferredSize(new Dimension(0, 200));

@@ -33,12 +33,17 @@ public class LeBonCoinAd extends Ad {
                 break;
         }
 
-        this.fields.put(AdField.NbRooms, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_rooms\"]/div[2]")).getText()));
         this.fields.put(AdField.Description, wd.findElement(By.xpath("//*[@data-qa-id=\"adview_description_container\"]/div[1]/span")).getText());
         // TODO Get the URL
         // TODO Get the Provider
 
         // Optional fields
+        try {
+            this.fields.put(AdField.NbRooms, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_rooms\"]/div[2]")).getText()));
+        } catch (NoSuchElementException e) {
+            System.out.println("Pas de nombre de pièces.");
+        }
+
         try {
             this.fields.put(AdField.Area, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_square\"]/div[2]")).getText().replaceAll("[^0-9]", "")));
         } catch (NoSuchElementException e) {

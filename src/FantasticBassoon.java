@@ -14,7 +14,13 @@ public class FantasticBassoon{
         }
     }
 
-    private static MutableTreeNode selectedSearch;
+    static Vector<AssetTableModel> selectionChangedListeners = new Vector<>();
+
+    private static SearchTreeItem selectedSearch = searches;
+    public static SearchTreeItem getSelectedSearch() {
+        return selectedSearch;
+    }
+
     static TreeSelectionListener treeSelectionListener = e -> {
         Object node;
         try {
@@ -22,15 +28,29 @@ public class FantasticBassoon{
         } catch (NullPointerException ex) {
             node = null;
         }
-        changeSelectedSearch((MutableTreeNode) node);
+        changeSelectedSearch((SearchTreeItem) node);
     };
 
-    private static void changeSelectedSearch(MutableTreeNode search) {
+    private static void changeSelectedSearch(SearchTreeItem search) {
         selectedSearch = search;
+        notifySelectionChanged();
         if (search instanceof Removable)
             Actions.removeSearchAction.setEnabled(true);
         else
             Actions.removeSearchAction.setEnabled(false);
+    }
+
+    private static void notifySelectionChanged() {
+        for (AssetTableModel listener : selectionChangedListeners)
+            listener.fireTableDataChanged();
+    }
+
+    public static void registerSelectionChangedListener (AssetTableModel tableModel){
+        selectionChangedListeners.add(tableModel);
+    }
+
+    public static void unregisterSelectionChangedListener(AssetTableModel tableModel) {
+        selectionChangedListeners.remove(tableModel);
     }
 
     public static void createAndShowNewSearchContext() {
@@ -48,6 +68,7 @@ public class FantasticBassoon{
 
     public static void refresh() {
         ((Refreshable)selectedSearch).refresh();
+        notifySelectionChanged();
     }
 
     private static void createAndShowMainFrame() {

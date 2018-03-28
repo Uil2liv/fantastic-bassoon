@@ -17,6 +17,8 @@ public class Provider {
         formPage.access();
         formPage.fill(q);
         ResultPage resultPage = formPage.submit();
-        return resultPage.getAssets();
+        Vector<Asset> assets = resultPage.getAssets();
+        wd.quit();
+        return assets;
     }
 }

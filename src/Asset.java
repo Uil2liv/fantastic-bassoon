@@ -6,4 +6,8 @@ public class Asset {
     public void add(Ad.AdField field, Object value) {
         this.fields.put(field, value);
     }
+
+    public Object get(Ad.AdField key) {
+        return fields.get(key);
+    }
 }

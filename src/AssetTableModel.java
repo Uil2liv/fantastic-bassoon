@@ -1,26 +1,32 @@
 import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
-public class AssetTableModel implements TableModel {
+public class AssetTableModel extends DefaultTableModel {
+    AssetTableModel() {
+        super();
+        FantasticBassoon.registerSelectionChangedListener(this);
+    }
+
 
     @Override
     public int getRowCount() {
-        return 0;
+        return FantasticBassoon.getSelectedSearch().getAssetCount();
     }
 
     @Override
     public int getColumnCount() {
-        return 0;
+        return 3;
     }
 
     @Override
     public String getColumnName(int columnIndex) {
-        return null;
+        String[] columns = {"Titre", "Prix", "Date"};
+        return columns[columnIndex];
     }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return null;
+        return getValueAt(0, columnIndex).getClass();
     }
 
     @Override
@@ -30,7 +36,21 @@ public class AssetTableModel implements TableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return null;
+        Ad.AdField key = null;
+
+        switch (columnIndex) {
+            case 0:
+                key = Ad.AdField.Title;
+                break;
+            case 1:
+                key = Ad.AdField.Price;
+                break;
+            case 2:
+                key = Ad.AdField.Date;
+                break;
+        }
+
+        return FantasticBassoon.getSelectedSearch().getValue(rowIndex, key);
     }
 
     @Override
@@ -38,6 +58,7 @@ public class AssetTableModel implements TableModel {
 
     }
 
+/*
     @Override
     public void addTableModelListener(TableModelListener l) {
 
@@ -47,4 +68,5 @@ public class AssetTableModel implements TableModel {
     public void removeTableModelListener(TableModelListener l) {
 
     }
+*/
 }

@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.Vector;
 
-public class Searches implements MutableTreeNode, FantasticBassoon.Refreshable{
-    private Vector<TreeNode> elements = new Vector<>();
+public class Searches implements SearchTreeItem{
+    private Vector<SearchTreeItem> elements = new Vector<>();
     private Vector<DefaultTreeModel> elementAddedListeners = new Vector<>();
     private Vector<DefaultTreeModel> elementRemovedListeners = new Vector<>();
 
@@ -76,10 +74,21 @@ public class Searches implements MutableTreeNode, FantasticBassoon.Refreshable{
         return "Mes recherches";
     }
 
+    // Implements SearchTreeItem
+    @Override
+    public int getAssetCount(){
+        return 0;
+    }
+
+    @Override
+    public Object getValue(int i, Ad.AdField key) {
+        return null;
+    }
+
     // MutableTreeNode Implementation
     @Override
     public void insert(MutableTreeNode child, int index) {
-        this.elements.insertElementAt(child, index);
+        this.elements.insertElementAt((SearchTreeItem) child, index);
     }
 
     @Override
