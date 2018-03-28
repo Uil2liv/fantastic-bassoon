@@ -1,3 +1,5 @@
+import app.core.AssetType;
+
 import java.net.URL;
 import java.util.Date;
 import java.util.Vector;

@@ -1,3 +1,6 @@
+import app.core.AssetType;
+import app.core.Asset;
+import app.core.common.Query;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 

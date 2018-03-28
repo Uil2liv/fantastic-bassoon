@@ -1,20 +1,34 @@
-import java.util.Vector;
+import app.core.AssetType;
+import app.core.common.Provider;
+import app.core.common.ProviderFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Tests {
+
     public static void main(String[] args){
         // Set path to Chrome Webdriver
         System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
 
         Provider p = new Provider(ProviderFactory.Providers.LeBonCoin);
-        Query q = new Query();
 
-        q.fields.put(Query.Keys.Location, "Le roc saint andré");
-        q.fields.put(Query.Keys.Zip, "56460");
-        q.fields.put(Query.Keys.MinArea, 123);
-        //q.fields.put(Query.Keys.MaxArea, 234);
-        q.fields.put(Query.Keys.Type, AssetType.House);
 
-        Vector<Asset> assets = p.search(q);
-        System.out.println(assets);
+        MyQuery q = new MyQuery();
+
+        q.put(MyQuery.Keys.Location, "Le roc saint andré");
+        q.put(MyQuery.Keys.Zip, "56460");
+        q.put(MyQuery.Keys.MinArea, 123);
+        q.put(MyQuery.Keys.MaxArea, 234);
+        q.put(MyQuery.Keys.Type, AssetType.House);
+
+        File f = new File("test.json");
+        ObjectMapper o = new ObjectMapper();
+        try {
+            o.writerWithDefaultPrettyPrinter().writeValue(f, q);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

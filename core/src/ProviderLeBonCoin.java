@@ -1,4 +1,6 @@
-import com.sun.xml.internal.ws.util.StringUtils;
+import app.core.common.Ad;
+import app.core.Asset;
+import app.core.common.Query;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -8,7 +10,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class ProviderLeBonCoin implements IProvider {
     private WebDriver wd;
@@ -141,7 +142,7 @@ public class ProviderLeBonCoin implements IProvider {
             maxRoom.selectMinValueGreaterThan(q.getMaxRoom());
         }
 
-        // Move to Asset Types
+        // Move to app.core.Asset Types
         int offset = houseWidget.getLocation().getY();
         this.ScrollTo(offset);
 
@@ -177,7 +178,7 @@ public class ProviderLeBonCoin implements IProvider {
         Boolean isLastPage = false;
         // for each page
         while (!isLastPage) {
-            // Create an Asset instance for each asset displayed on the page
+            // Create an app.core.Asset instance for each asset displayed on the page
             List<WebElement> assetElements = (new WebDriverWait(wd, 10))
                     .until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//*[@id=\"listingAds\"]/section/section/ul/li")));
             List<Ad> ads = new ArrayList<Ad>();

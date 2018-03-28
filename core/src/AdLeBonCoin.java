@@ -1,3 +1,6 @@
+import app.core.AssetType;
+import app.core.common.Ad;
+import app.core.Asset;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
