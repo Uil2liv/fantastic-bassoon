@@ -1,9 +1,6 @@
 package app.core.leboncoin;
 
-import app.core.common.Ad;
-import app.core.common.FormPage;
-import app.core.common.ProviderFactory;
-import app.core.common.ResultPage;
+import app.core.common.*;
 import org.openqa.selenium.WebDriver;
 
 public class LeBonCoinFactory extends ProviderFactory {

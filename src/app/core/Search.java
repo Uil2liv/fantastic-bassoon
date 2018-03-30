@@ -1,9 +1,10 @@
 package app.core;
 
 import app.FantasticBassoon;
-
 import app.core.common.Ad;
 import app.ui.tree.SearchTreeItem;
+import app.core.common.Provider;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -43,6 +44,11 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
     @Override
     public Object getValue(int i, Ad.AdField key) {
         return this.assets.get(i).get(key);
+    }
+
+    @Override
+    public Asset getAsset(int i) {
+        return assets.get(i);
     }
 
     // Implements MutableTreeNode

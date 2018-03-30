@@ -19,7 +19,7 @@ public class Searches implements SearchTreeItem {
     private Vector<DefaultTreeModel> elementAddedListeners = new Vector<>();
     private Vector<DefaultTreeModel> elementRemovedListeners = new Vector<>();
 
-    void load(String path){
+    public void load(String path){
         File searchFile = new File(path);
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -31,10 +31,9 @@ public class Searches implements SearchTreeItem {
         }
     }
 
-    void save(String path) {
+    public void save(String path) {
         File searchFile = new File(path);
         ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(searchFile, this.elements);
         } catch (IOException e) {
@@ -91,6 +90,9 @@ public class Searches implements SearchTreeItem {
     public Object getValue(int i, Ad.AdField key) {
         return null;
     }
+
+    @Override
+    public Asset getAsset(int i) { return null; }
 
     // MutableTreeNode Implementation
     @Override

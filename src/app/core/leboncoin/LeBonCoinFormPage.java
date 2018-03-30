@@ -1,8 +1,11 @@
 package app.core.leboncoin;
 
 import app.core.AssetType;
+import app.core.*;
 import app.core.common.*;
-import app.core.common.Query;
+
+import app.core.common.fields.*;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

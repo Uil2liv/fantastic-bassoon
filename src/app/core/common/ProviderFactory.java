@@ -1,13 +1,15 @@
 package app.core.common;
 
+import app.core.leboncoin.LeBonCoinFactory;
+
 import org.openqa.selenium.WebDriver;
 
 public abstract class ProviderFactory {
-    enum Providers {
+    public enum Providers {
         LeBonCoin
     }
 
-    ProviderFactory() { }
+    public ProviderFactory() { }
 
     static public ProviderFactory createFactory(Providers p){
         switch (p) {

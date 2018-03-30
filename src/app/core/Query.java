@@ -3,7 +3,7 @@ package app.core;
 import java.util.EnumMap;
 
 public class Query extends EnumMap<Query.Keys, Object>{
-    enum Keys {
+    public enum Keys {
         Name,
         Type,
         Location,
@@ -17,7 +17,7 @@ public class Query extends EnumMap<Query.Keys, Object>{
     }
 
     // Constructor
-    Query() { super(Keys.class); }
+    public Query() { super(Keys.class); }
 
     public void add(Keys k, Object value) {
         this.put(k, value);

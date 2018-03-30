@@ -1,7 +1,7 @@
 package app.ui;
 
-import app.core.common.Query;
-import app.core.Search;
+import app.FantasticBassoon;
+import app.core.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

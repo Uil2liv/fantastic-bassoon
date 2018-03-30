@@ -1,11 +1,14 @@
 package app.ui;
 
 import app.FantasticBassoon;
+import app.ui.adview.AdView;
 import app.ui.menu.MenuBar;
-import app.ui.table.AssetTable;
+import app.ui.table.*;
+import app.ui.tree.*;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -45,31 +48,18 @@ public class MainFrame extends JFrame {
         contentPane.setPreferredSize(new Dimension(800, 0));
 
 
-        AssetTable searchContent = new AssetTable(new AssetTableModel());
-        searchContent.getModel().addTableModelListener(searchContent);
-        searchContent.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        for (int i = 0; i < searchContent.getColumnCount(); i++) {
-            TableColumn col = searchContent.getColumnModel().getColumn(i);
-            switch (i) {
-                case 0:
-                    col.setPreferredWidth(600);
-                    break;
-                case 1:
-                    col.setPreferredWidth(100);
-                    break;
-                case 2:
-                    col.setPreferredWidth(100);
-                    break;
-            }
-        }
+        AssetTable assetsList = new AssetTable(new AssetTableModel());
+        assetsList.getModel().addTableModelListener(assetsList);
 
-        JScrollPane scrollPane = new JScrollPane(searchContent);
-        searchContent.setFillsViewportHeight(true);
-        scrollPane.setPreferredSize(new Dimension(0, 200));
-        contentPane.setTopComponent(scrollPane);
+        JScrollPane assetsListScroller = new JScrollPane(assetsList);
+        assetsList.setFillsViewportHeight(true);
+        assetsListScroller.setPreferredSize(new Dimension(0, 200));
+        contentPane.setTopComponent(assetsListScroller);
 
-        JPanel emptyPanel = new JPanel();
-        contentPane.setBottomComponent(emptyPanel);
+        AdView adView = new AdView();
+        assetsList.addAssetSelectionListener(adView);
+        JScrollPane adViewScroller = new JScrollPane(adView);
+        contentPane.setBottomComponent(adViewScroller);
 
         splitPane.setRightComponent(contentPane);
 

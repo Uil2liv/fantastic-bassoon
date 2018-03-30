@@ -2,7 +2,9 @@ package app;
 
 import app.ui.table.AssetTableModel;
 import app.ui.tree.SearchTreeItem;
-import app.ui.MainFrame;
+import app.ui.*;
+import app.core.common.*;
+import app.core.*;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
@@ -10,9 +12,9 @@ import java.net.URL;
 import java.util.Vector;
 
 public class FantasticBassoon{
-    static MainFrame mainFrame;
+    public static MainFrame mainFrame;
     public static Searches searches = new Searches();
-    static Vector<Provider> providers = new Vector<>();
+    public static Vector<Provider> providers = new Vector<>();
     static {
         for (ProviderFactory.Providers provider : ProviderFactory.Providers.values()){
             providers.add(new Provider(provider));
@@ -84,7 +86,7 @@ public class FantasticBassoon{
         searches.load("searches.json");
 
         // Set path to Chrome Webdriver
-        URL webDriverPath = FantasticBassoon.class.getResource("chromedriver.exe");
+        URL webDriverPath = FantasticBassoon.class.getResource("/chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", webDriverPath.getPath());
 
         SwingUtilities.invokeLater(FantasticBassoon::createAndShowMainFrame);

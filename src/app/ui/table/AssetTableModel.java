@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class AssetTableModel extends DefaultTableModel {
-    AssetTableModel() {
+    public AssetTableModel() {
         super();
         FantasticBassoon.registerSelectionChangedListener(this);
     }

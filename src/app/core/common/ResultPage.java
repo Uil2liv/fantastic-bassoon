@@ -6,11 +6,11 @@ import org.openqa.selenium.WebElement;
 
 import java.util.Vector;
 
-abstract class ResultPage extends Page {
+public abstract class ResultPage extends Page {
     protected final ProviderFactory factory;
     protected WebElement nextPageWidget;
 
-    ResultPage(WebDriver wd, ProviderFactory factory) {
+    public ResultPage(WebDriver wd, ProviderFactory factory) {
         super(wd);
         this.factory = factory;
         this.nextPageWidget = getNextPageWidget();
