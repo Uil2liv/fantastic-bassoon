@@ -15,7 +15,15 @@ public class AssetTableModel extends DefaultTableModel {
 
     @Override
     public int getRowCount() {
-        return FantasticBassoon.getSelectedSearch().getAssetCount();
+        try {
+            return FantasticBassoon.getSelectedSearch().getAssetCount();
+        } catch (NullPointerException e) {
+            // TODO avoid null exception if possible.
+            // Exception occurs when the root tree element is collapsed.
+            System.out.println("la méthode getAssetCount a retourné NULL");
+            //e.printStackTrace();
+            return 0;
+        }
     }
 
     @Override
