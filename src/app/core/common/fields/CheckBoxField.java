@@ -16,7 +16,7 @@ public class CheckBoxField extends Field {
     @Override
     public void fill(Object o) {
         for (AssetType boxKey : boxes.keySet()){
-            if (boxes.get(boxKey).isSelected() != (boxKey == o))
+            if (boxes.get(boxKey).isSelected() != (boxKey.toString().equals(o.toString())))
                 boxes.get(boxKey).click();
         }
     }

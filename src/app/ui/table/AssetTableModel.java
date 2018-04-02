@@ -4,6 +4,7 @@ import app.FantasticBassoon;
 import app.core.common.Ad;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.Date;
 
 
 public class AssetTableModel extends DefaultTableModel {
@@ -39,7 +40,14 @@ public class AssetTableModel extends DefaultTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return getValueAt(0, columnIndex).getClass();
+
+        switch (columnIndex) {
+            case 0: return String.class;
+            case 1: return Integer.class;
+            case 2: return Date.class;
+            default: return null;
+        }
+        //return getValueAt(0, columnIndex).getClass();
     }
 
     @Override

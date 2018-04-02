@@ -28,7 +28,7 @@ public class LeBonCoinAd extends Ad {
             e.printStackTrace();
         }
 
-        switch ( wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_real_estate_type\"]/div[2]")).getText() ) {
+        switch ( wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_real_estate_type\"]/div/div[2]")).getText() ) {
             case "Maison" :
                 this.fields.put(AdField.Type, AssetType.House);
                 break;
@@ -43,30 +43,30 @@ public class LeBonCoinAd extends Ad {
 
         // Optional fields
         try {
-            this.fields.put(AdField.NbRooms, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_rooms\"]/div[2]")).getText()));
+            this.fields.put(AdField.NbRooms, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_rooms\"]/div/div[2]")).getText()));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de nombre de pièces.");
         }
 
         try {
-            this.fields.put(AdField.Area, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_square\"]/div[2]")).getText().replaceAll("[^0-9]", "")));
+            this.fields.put(AdField.Area, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_square\"]/div/div[2]")).getText().replaceAll("[^0-9]", "")));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de surface.");
         }
         try {
-            this.fields.put(AdField.SubmitterId, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_custom_ref\"]/div[2]")).getText());
+            this.fields.put(AdField.SubmitterId, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_custom_ref\"]/div/div[2]")).getText());
         } catch (NoSuchElementException e) {
             System.out.println("Pas de référence de l'émetteur.");
         }
         try {
             // TODO Don't get the value when the AD returns "Vierge"
-            this.fields.put(AdField.GHG, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_ges\"]/div[2]")).getText().substring(0, 1));
+            this.fields.put(AdField.GHG, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_ges\"]/div/div[2]/div/div[contains(@class, \"_1sd0z\")]")).getText().substring(0, 1));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de classe émission GES.");
         }
         try {
             // TODO Don't get the value when the AD returns "Vierge"
-            this.fields.put(AdField.Energy, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_energy_rate\"]/div[2]")).getText().substring(0, 1));
+            this.fields.put(AdField.Energy, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_energy_rate\"]/div/div[2]/div/div[contains(@class, \"_1sd0z\")]")).getText().substring(0, 1));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de classe énergie.");
         }

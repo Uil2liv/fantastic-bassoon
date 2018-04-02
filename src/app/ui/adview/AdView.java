@@ -9,12 +9,15 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.text.*;
 import java.awt.*;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 
 public class AdView extends JTextPane implements AssetTable.AssetSelectionListener{
-    AttributeSet body;
-    AttributeSet headers;
-    AttributeSet title;
-    AttributeSet price;
+    Style body;
+    Style headers;
+    Style title;
+    Style price;
+    Style criteria;
+    Style label;
 
     public AdView() {
         super();
@@ -22,17 +25,29 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
         this.setEditable(false);
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
-        body = sc.addAttribute(sc.getEmptySet(), StyleConstants.Family, "Calibri");
-        body = sc.addAttribute(body, StyleConstants.Size, 12);
 
-        price = sc.addAttribute(body, StyleConstants.Foreground, Color.darkGray);
-        price = sc.addAttribute(price, StyleConstants.Bold, true);
-        price = sc.addAttribute(price, StyleConstants.Size, 20);
+        body = sc.addStyle("test", null);
+        body.addAttribute(StyleConstants.FontFamily, "Calibri");
+        body.addAttribute(StyleConstants.Size, 12);
 
-        //AttributeSet headersSet = AttributeSet.NameAttribute
-        headers = sc.addAttribute(sc.getEmptySet(), StyleConstants.Family, "Cambria");
+        price = sc.addStyle("price", body);
+        price.addAttribute(StyleConstants.Foreground, Color.darkGray);
+        price.addAttribute(StyleConstants.Bold, true);
+        price.addAttribute(StyleConstants.Size, 18);
 
-        title = sc.addAttribute(headers, StyleConstants.Size, 24);
+        criteria = sc.addStyle("criteria", body);
+
+        label = sc.addStyle("label", criteria);
+        label.addAttribute(StyleConstants.Bold, true);
+        label.addAttribute(StyleConstants.Underline, true);
+
+        headers = sc.addStyle("header", null);
+        headers.addAttribute(StyleConstants.Family, "Cambria");
+
+        title = sc.addStyle("title", headers);
+        title.addAttribute(StyleConstants.Size, 24);
+
+
 
         this.writeDocument(null);
     }
@@ -50,7 +65,37 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
             // TODO Write the asset Document
             try {
                 doc.insertString(doc.getLength(), asset.get(Ad.AdField.Title) + "\n", title);
-                doc.insertString(doc.getLength(), NumberFormat.getCurrencyInstance().format(asset.get(Ad.AdField.Price)), price);
+                if (asset.get(Ad.AdField.Area) != null)
+                    doc.insertString(doc.getLength(), NumberFormat.getIntegerInstance().format(asset.get(Ad.AdField.Area)) + "m² - ", price);
+                doc.insertString(doc.getLength(), NumberFormat.getCurrencyInstance().format(asset.get(Ad.AdField.Price)) + " ", price);
+                if (asset.get(Ad.AdField.Area) != null)
+                    doc.insertString(doc.getLength(), "(" + NumberFormat.getIntegerInstance().format(asset.getAveragePrice()) + "€/m²)\n",price);
+                else
+                    doc.insertString(doc.getLength(), "\n", price);
+
+                doc.insertString(doc.getLength(), "Date de mise à jour :", label);
+                doc.insertString(doc.getLength(), " " + SimpleDateFormat.getDateInstance().format(asset.get(Ad.AdField.Date)) + "\n",criteria);
+
+                if (asset.get(Ad.AdField.NbRooms) != null) {
+                    doc.insertString(doc.getLength(), "Nombre de pièces :", label);
+                    doc.insertString(doc.getLength(), " " + NumberFormat.getIntegerInstance().format(asset.get(Ad.AdField.NbRooms)) + "\n", criteria);
+                }
+
+                if (asset.get(Ad.AdField.Energy) != null) {
+                    doc.insertString(doc.getLength(), "Classe énergie :", label);
+                    doc.insertString(doc.getLength(), " " + asset.get(Ad.AdField.Energy) + "\n", criteria);
+                }
+
+                if (asset.get(Ad.AdField.GHG) != null) {
+                    doc.insertString(doc.getLength(), "Émission gaz à effet de serre :", label);
+                    doc.insertString(doc.getLength(), " " + asset.get(Ad.AdField.GHG) + "\n", criteria);
+                }
+
+                doc.insertString(doc.getLength(), "\nDescription :\n", label);
+                doc.insertString(doc.getLength(), asset.get(Ad.AdField.Description).toString(), body);
+
+                this.setCaretPosition(0);
+
             } catch (BadLocationException e) {
                 e.printStackTrace();
             }

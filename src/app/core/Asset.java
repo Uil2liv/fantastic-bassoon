@@ -12,4 +12,8 @@ public class Asset extends EnumMap<Ad.AdField, Object>{
     public void add(Ad.AdField field, Object value) {
         this.put(field, value);
     }
+
+    public int getAveragePrice() {
+        return (int)this.get(Ad.AdField.Price)/(int)this.get(Ad.AdField.Area);
+    }
 }

@@ -5,23 +5,29 @@ import app.core.Asset;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.text.JTextComponent;
-import java.awt.*;
+import javax.swing.table.*;
 import java.text.Format;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Currency;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class AssetTable extends JTable {
     public AssetTable(TableModel t) {
         super(t);
+
+        TableRowSorter<AssetTableModel> sorter = new TableRowSorter<>((AssetTableModel)this.getModel());
+        this.setRowSorter(sorter);
+
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(2, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
 
         for (int i = 0; i < getColumnCount(); i++) {
             TableColumn col = getColumnModel().getColumn(i);
@@ -66,7 +72,7 @@ public class AssetTable extends JTable {
 
         // Let know listeners that a new Asset is selected
         if (!e.getValueIsAdjusting()) {
-            Asset a = FantasticBassoon.getSelectedSearch().getAsset(getSelectedRow());
+            Asset a = FantasticBassoon.getSelectedSearch().getAsset(this.convertRowIndexToModel(getSelectedRow()));
             notifyAssetSelectionChanged(a);
         }
     }
