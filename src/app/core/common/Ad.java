@@ -12,6 +12,14 @@ public abstract class Ad extends Page {
 
     public Object get(AdField key) { return this.fields.get(key); }
 
+    public Boolean isEquals(Ad ad){
+        for (AdField key : AdField.values()) {
+            if (this.get(key) != ad.get(key))
+                return false;
+        }
+        return true;
+    }
+
     public abstract void getFields();
 
     public enum AdField {

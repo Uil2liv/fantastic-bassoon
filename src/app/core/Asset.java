@@ -7,7 +7,10 @@ import java.util.Vector;
 public class Asset extends Vector<Ad> {
     public Asset() {
         super();
+        this.status = Status.New;
     }
+
+    public Status status;
 
     public Object get(Ad.AdField key) {
         for (Ad ad : this) {
@@ -18,6 +21,28 @@ public class Asset extends Vector<Ad> {
         return null;
     }
 
+    public Ad getAd(Ad requestedAd) {
+        for (Ad ad : this){
+            if (ad.get(Ad.AdField.ProviderId) == requestedAd.get(Ad.AdField.ProviderId))
+                return ad;
+        }
+
+        return null;
+    }
+
+    public void update(Ad updatedAd){
+        for (Ad ad : this) {
+            if (updatedAd.get(Ad.AdField.ProviderId) != null &
+                    updatedAd.get(Ad.AdField.ProviderId) == ad.get(Ad.AdField.ProviderId)) {
+                if (!ad.isEquals(updatedAd)) {
+                    this.remove(ad);
+                    this.add(updatedAd);
+                    this.status = Status.Updated;
+                }
+            }
+        }
+    }
+
     public int getAveragePrice() {
         for (Ad ad : this) {
             if (ad.get(Ad.AdField.Area) != null) {
@@ -26,5 +51,12 @@ public class Asset extends Vector<Ad> {
         }
 
         return 0;
+    }
+
+    enum Status {
+        New,
+        Updated,
+        Unchanged,
+        Archived
     }
 }

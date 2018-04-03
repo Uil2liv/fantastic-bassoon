@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
 
 public class LeBonCoinAd extends Ad {
     LeBonCoinAd(String url) {
@@ -32,6 +33,8 @@ public class LeBonCoinAd extends Ad {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        this.fields.put(AdField.ProviderId, Pattern.compile("/.*/(?<Id>[0-9]*)\\.htm").matcher(this.url.getPath()).group("Id"));
 
         switch ( wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_real_estate_type\"]/div/div[2]")).getText() ) {
             case "Maison" :
@@ -64,13 +67,11 @@ public class LeBonCoinAd extends Ad {
             System.out.println("Pas de référence de l'émetteur.");
         }
         try {
-            // TODO Don't get the value when the AD returns "Vierge"
             this.fields.put(AdField.GHG, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_ges\"]/div/div[2]/div/div[contains(@class, \"_1sd0z\")]")).getText().substring(0, 1));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de classe émission GES.");
         }
         try {
-            // TODO Don't get the value when the AD returns "Vierge"
             this.fields.put(AdField.Energy, wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_energy_rate\"]/div/div[2]/div/div[contains(@class, \"_1sd0z\")]")).getText().substring(0, 1));
         } catch (NoSuchElementException e) {
             System.out.println("Pas de classe énergie.");
