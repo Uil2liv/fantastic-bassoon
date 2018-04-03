@@ -5,6 +5,7 @@ import app.core.common.Ad;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,11 @@ public class LeBonCoinAd extends Ad {
     }
 
     @Override
-    public void getField(WebDriver wd) {
+    public void getFields() {
+        WebDriver wd = new ChromeDriver();
+
+        wd.get(this.url.toString());
+
         // Mandatory Fields
         this.fields.put(AdField.Title, wd.findElement(By.xpath("//*[@data-qa-id=\"adview_title\"]/h1")).getText());
         this.fields.put(AdField.Price, Integer.parseInt(wd.findElement(By.xpath("//*[@data-qa-id=\"adview_price\"]/div/span"))
@@ -71,5 +76,7 @@ public class LeBonCoinAd extends Ad {
             System.out.println("Pas de classe énergie.");
         }
         // TODO Get the Pictures
+
+        wd.quit();
     }
 }

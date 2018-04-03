@@ -18,23 +18,9 @@ public abstract class ResultPage extends Page {
 
     protected abstract WebElement getNextPageWidget();
 
-    public Vector<Asset> getAssets() {
-        Vector<Asset> assets = new Vector<>();
-        Vector<Ad> ads = getAds();
-
-        ads.forEach(ad -> assets.add(ad.getAsset()));
-
-        if (nextPageWidget != null) {
-            goToNextPage();
-            assets.addAll(getAssets());
-        }
-
-        return assets;
-    }
-
     abstract protected Vector<Ad> getAds();
 
-    private void goToNextPage() {
+    protected void goToNextPage() {
         nextPageWidget.click();
         this.nextPageWidget = getNextPageWidget();
     }

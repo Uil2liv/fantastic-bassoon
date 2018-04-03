@@ -30,6 +30,21 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
         this.query = query;
     }
 
+    private void updateAssets(Vector<Ad> ads) {
+        for (Ad ad : ads) {
+            if (getAsset(ad) != null) {
+                Asset a = getAsset(ad);
+                a.update(ad);
+            }
+        }
+    }
+
+    public Asset getAsset(Ad ad) {
+        for (Asset a : assets) {
+            if (a.contains())
+        }
+    }
+
     public String toString() {
         return this.query.toString();
     }
@@ -125,8 +140,12 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
 
     // Implements Refreshable
     public void refresh() {
+        Vector<Ad> ads = new Vector<>();
+
         for (Provider provider : FantasticBassoon.providers) {
-            assets.addAll(provider.search(query));
+            ads.addAll(provider.search(query));
         }
+
+        updateAssets(ads);
     }
 }

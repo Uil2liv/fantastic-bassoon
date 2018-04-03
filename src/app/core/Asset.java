@@ -2,18 +2,29 @@ package app.core;
 
 import app.core.common.Ad;
 
-import java.util.EnumMap;
+import java.util.Vector;
 
-public class Asset extends EnumMap<Ad.AdField, Object>{
+public class Asset extends Vector<Ad> {
     public Asset() {
-        super(Ad.AdField.class);
+        super();
     }
 
-    public void add(Ad.AdField field, Object value) {
-        this.put(field, value);
+    public Object get(Ad.AdField key) {
+        for (Ad ad : this) {
+            if (ad.get(key) != null)
+                return ad.get(key);
+        }
+
+        return null;
     }
 
     public int getAveragePrice() {
-        return (int)this.get(Ad.AdField.Price)/(int)this.get(Ad.AdField.Area);
+        for (Ad ad : this) {
+            if (ad.get(Ad.AdField.Area) != null) {
+                return (Integer)ad.get(Ad.AdField.Price) / (Integer)ad.get(Ad.AdField.Area);
+            }
+        }
+
+        return 0;
     }
 }

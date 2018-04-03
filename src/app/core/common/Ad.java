@@ -1,8 +1,5 @@
 package app.core.common;
 
-import app.core.Asset;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.EnumMap;
 
@@ -13,22 +10,9 @@ public abstract class Ad extends Page {
         super(url);
     }
 
-    public Asset getAsset() {
-        Asset asset = new Asset();
+    public Object get(AdField key) { return this.fields.get(key); }
 
-        wd = new ChromeDriver();
-        wd.get(url.toString());
-        getField(wd);
-
-        for (AdField fieldKey : this.fields.keySet()) {
-            asset.add(fieldKey, this.fields.get(fieldKey));
-        }
-        wd.quit();
-
-        return asset;
-    }
-
-    public abstract void getField(WebDriver wd);
+    public abstract void getFields();
 
     public enum AdField {
         Id,

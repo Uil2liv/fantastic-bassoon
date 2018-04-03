@@ -37,7 +37,15 @@ public class LeBonCoinResultPage extends ResultPage {
 
         for (WebElement we : (new WebDriverWait(wd, 10).until(ExpectedConditions
                 .presenceOfAllElementsLocatedBy(By.xpath("//*[@id=\"listingAds\"]/section/section/ul/li/a"))))) {
-            ads.add(factory.createAd(we.getAttribute("href")));
+
+            Ad ad = factory.createAd(we.getAttribute("href"));
+            ad.getFields();
+            ads.add(ad);
+        }
+
+        if (this.nextPageWidget != null) {
+            goToNextPage();
+            ads.addAll(getAds());
         }
 
         return ads;

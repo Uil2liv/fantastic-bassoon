@@ -16,14 +16,14 @@ public class Provider {
         this.factory = ProviderFactory.createFactory(provider);
     }
 
-    public Vector<Asset> search(Query q){
+    public Vector<Ad> search(Query q){
         WebDriver wd = new ChromeDriver();
         formPage = factory.createFormPage(wd);
         formPage.access();
         formPage.fill(q);
         ResultPage resultPage = formPage.submit();
-        Vector<Asset> assets = resultPage.getAssets();
+        Vector<Ad> ads = resultPage.getAds();
         wd.quit();
-        return assets;
+        return ads;
     }
 }
