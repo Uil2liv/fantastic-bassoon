@@ -5,30 +5,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Tests {
 
     public static void main(String[] args){
-        // Set path to Chrome Webdriver
-        System.setProperty("webdriver.chrome.driver", "resources/chromedriver.exe");
+        URL url;
+        String matches;
 
-        Provider p = new Provider(ProviderFactory.Providers.LeBonCoin);
-
-
-        MyQuery q = new MyQuery();
-
-        q.put(MyQuery.Keys.Location, "Le roc saint andré");
-        q.put(MyQuery.Keys.Zip, "56460");
-        q.put(MyQuery.Keys.MinArea, 123);
-        q.put(MyQuery.Keys.MaxArea, 234);
-        q.put(MyQuery.Keys.Type, AssetType.House);
-
-        File f = new File("test.json");
-        ObjectMapper o = new ObjectMapper();
         try {
-            o.writerWithDefaultPrettyPrinter().writeValue(f, q);
-        } catch (IOException e) {
+            url = new URL("https://www.leboncoin.fr/ventes_immobilieres/1388631331.htm?ca=12_s");
+            Pattern pattern = Pattern.compile("/[^/]+/(?<Id>[0-9]+)\\.htm");
+            Matcher m = pattern.matcher(url.getPath());
+            m.matches();
+            matches = m.group();
+            System.out.println(matches);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+
+
     }
 }

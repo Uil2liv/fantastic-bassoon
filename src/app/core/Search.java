@@ -35,6 +35,9 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
             if (getAsset(ad) != null) {
                 Asset a = getAsset(ad);
                 a.update(ad);
+            } else {
+                Asset a = new Asset(ad);
+                assets.add(a);
             }
         }
     }

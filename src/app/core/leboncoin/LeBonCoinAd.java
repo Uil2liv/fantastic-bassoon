@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LeBonCoinAd extends Ad {
@@ -33,8 +34,9 @@ public class LeBonCoinAd extends Ad {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        this.fields.put(AdField.ProviderId, Pattern.compile("/.*/(?<Id>[0-9]*)\\.htm").matcher(this.url.getPath()).group("Id"));
+        Matcher m = Pattern.compile("/[^/]+/(?<Id>[0-9]+)\\.htm").matcher(this.url.getPath());
+        m.matches();
+        this.fields.put(AdField.ProviderId, m.group("Id"));
 
         switch ( wd.findElement(By.xpath("//*[@data-qa-id=\"criteria_item_real_estate_type\"]/div/div[2]")).getText() ) {
             case "Maison" :

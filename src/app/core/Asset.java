@@ -10,6 +10,11 @@ public class Asset extends Vector<Ad> {
         this.status = Status.New;
     }
 
+    public Asset(Ad ad) {
+        this();
+        this.add(ad);
+    }
+
     public Status status;
 
     public Object get(Ad.AdField key) {
@@ -23,7 +28,7 @@ public class Asset extends Vector<Ad> {
 
     public Ad getAd(Ad requestedAd) {
         for (Ad ad : this){
-            if (ad.get(Ad.AdField.ProviderId) == requestedAd.get(Ad.AdField.ProviderId))
+            if (ad.get(Ad.AdField.ProviderId).equals(requestedAd.get(Ad.AdField.ProviderId)))
                 return ad;
         }
 
