@@ -14,5 +14,6 @@ public class EditMenu extends JMenu {
 
         // Define the content of the menu
         this.add(Actions.refreshSearchAction);
+        this.add(Actions.removeSearchAction);
     }
 }

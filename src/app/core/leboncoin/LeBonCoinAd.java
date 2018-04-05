@@ -2,6 +2,8 @@ package app.core.leboncoin;
 
 import app.core.AssetType;
 import app.core.common.Ad;
+import app.core.common.Provider;
+import app.core.common.ProviderFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
 public class LeBonCoinAd extends Ad {
     LeBonCoinAd(String url) {
         super(url);
+        this.fields.put(AdField.Provider, ProviderFactory.Providers.LeBonCoin);
     }
 
     @Override

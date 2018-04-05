@@ -69,8 +69,12 @@ public class FantasticBassoon{
     }
 
     public static void closeApplication() {
-        searches.save("searches.json");
+        save();
         System.exit(0);
+    }
+
+    public static void save() {
+        searches.save("searches.json");
     }
 
     public static void refresh() {

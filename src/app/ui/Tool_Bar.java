@@ -7,6 +7,8 @@ public class Tool_Bar extends JToolBar{
         super();
 
         this.add(Actions.newSearchAction);
+        this.add(Actions.saveAction);
+        this.add(new JToolBar.Separator());
         this.add(Actions.removeSearchAction);
         this.add(Actions.refreshSearchAction);
     }

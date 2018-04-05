@@ -21,6 +21,9 @@ public class Actions {
     public static AbstractAction refreshSearchAction = createAction("Refresh", "Rafraîchir",
             "Rafraîchir les données", FantasticBassoon::refresh,
             KeyStroke.getKeyStroke((char) KeyEvent.VK_F5), KeyEvent.VK_R);
+    public static AbstractAction saveAction = createAction("Save", "Enregistrer",
+            "Enregistrer les recherches", FantasticBassoon::save,
+            KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), KeyEvent.VK_E);
 
     static private AbstractAction createAction(String icon, String altText, String toolTip, Runnable func,
                                                KeyStroke shortcut, int mnemonic){
@@ -40,6 +43,7 @@ public class Actions {
                 func.run();
             }
         };
+
         action.putValue(Action.LARGE_ICON_KEY, new ImageIcon(largeIconURL));
         action.putValue(Action.SHORT_DESCRIPTION, toolTip);
         action.putValue(Action.ACCELERATOR_KEY, shortcut);
