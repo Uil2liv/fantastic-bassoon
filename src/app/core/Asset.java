@@ -38,7 +38,7 @@ public class Asset extends Vector<Ad> {
     public void update(Ad updatedAd){
         for (Ad ad : this) {
             if (updatedAd.get(Ad.AdField.ProviderId) != null &
-                    updatedAd.get(Ad.AdField.ProviderId) == ad.get(Ad.AdField.ProviderId)) {
+                    updatedAd.get(Ad.AdField.ProviderId).equals(ad.get(Ad.AdField.ProviderId))) {
                 if (!ad.isEquals(updatedAd)) {
                     this.remove(ad);
                     this.add(updatedAd);

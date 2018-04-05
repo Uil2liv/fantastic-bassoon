@@ -51,13 +51,6 @@ public class LeBonCoinFormPage extends FormPage {
                         // Concatenate City and Zip Code in the location field
                         fields.get(fieldKey).fill(q.get(fieldKey) + " " + q.get(Query.Keys.Zip));
 
-/*
-                        // Confirm selection by clicking on the first element of the dropdown list.
-                        WebElement locConfirm = (new WebDriverWait(wd, 10))
-                                .until(ExpectedConditions.presenceOfNestedElementLocatedBy(By.className("location-list"), By.xpath("li[1]")));
-                        locConfirm.click();
-*/
-
                         break;
                     default:
                         fields.get(fieldKey).fill(q.get(fieldKey));

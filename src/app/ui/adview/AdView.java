@@ -62,7 +62,7 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
         }
 
         if (asset != null) {
-            // TODO Write the asset Document
+            // TODO Display pictures if any
             try {
                 doc.insertString(doc.getLength(), asset.get(Ad.AdField.Title) + "\n", title);
                 if (asset.get(Ad.AdField.Area) != null)

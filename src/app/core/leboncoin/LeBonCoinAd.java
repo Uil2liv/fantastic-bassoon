@@ -1,5 +1,6 @@
 package app.core.leboncoin;
 
+import app.FantasticBassoon;
 import app.core.AssetType;
 import app.core.common.Ad;
 import app.core.common.Provider;
@@ -7,10 +8,22 @@ import app.core.common.ProviderFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,8 +64,6 @@ public class LeBonCoinAd extends Ad {
         }
 
         this.fields.put(AdField.Description, wd.findElement(By.xpath("//*[@data-qa-id=\"adview_description_container\"]/div[1]/span")).getText());
-        // TODO Get the URL
-        // TODO Get the app.core.common.Provider
 
         // Optional fields
         try {
@@ -81,8 +92,37 @@ public class LeBonCoinAd extends Ad {
         } catch (NoSuchElementException e) {
             System.out.println("Pas de classe énergie.");
         }
-        // TODO Get the Pictures
 
+        // Click on the slideshow to display all the pictures
+        Vector<String> pictures = new Vector<>();
+
+        wd.findElement(By.xpath("//*[@data-qa-id=\"slideshow_container\"]/div[1]/div[1]/div[1]/div[1]/div[2]/img")).click();
+        for (WebElement img : wd.findElements(By.xpath("//*[@data-qa-id=\"lightbox_item\"]/img"))) {
+            try {
+                URL imgUrl = new URL(img.getAttribute("src"));
+                m = Pattern.compile("^/([^/]+/)*(?<imgName>[a-zA-Z0-9]+\\.[a-zA-Z0-9]{3})$").matcher(imgUrl.getPath());
+                m.matches();
+                String imgName = m.group("imgName");
+
+                File imgFile = new File(this.fields.get(AdField.Provider) + "/" + this.fields.get(AdField.ProviderId) + "/" + imgName);
+                if (!imgFile.exists()) {
+                    try {
+                        BufferedImage bufferedImage = ImageIO.read(imgUrl);
+                        imgFile.mkdirs();
+                        ImageIO.write(bufferedImage, imgFile.getName().substring(imgName.lastIndexOf(".")+1), imgFile);
+                        pictures.add(imgFile.getPath());
+                    } catch (IOException e) {
+                        System.out.println("Impossible de lire l'image: " + imgUrl.toString());
+                    }
+                }
+
+            } catch (MalformedURLException e) {
+                System.out.println("Cannot retrieve url: " + img.getAttribute("src"));
+            }
+
+            if (pictures.size() > 0)
+                this.fields.put(AdField.Pictures, pictures);
+        }
         wd.quit();
     }
 }

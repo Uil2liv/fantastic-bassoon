@@ -1,6 +1,7 @@
 package app.core.common;
 
 
+import app.core.AssetType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,8 +15,9 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.util.EnumMap;
-import java.util.Map;
+import java.text.DateFormat;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @JsonSerialize(using = Ad.AdSerializer.class)
 @JsonDeserialize(using = Ad.AdDeserializer.class)
@@ -35,7 +37,7 @@ public abstract class Ad extends Page {
 
     public Boolean isEquals(Ad ad){
         for (AdField key : AdField.values()) {
-            if (this.get(key) != ad.get(key))
+            if (!Objects.equals(this.get(key), ad.get(key)))
                 return false;
         }
         return true;
@@ -58,7 +60,8 @@ public abstract class Ad extends Page {
         Energy,
         Submitter,
         Provider,
-        URL
+        URL,
+        Pictures
     }
 
     // Jackson custom serializer/deserializer
@@ -88,17 +91,18 @@ public abstract class Ad extends Page {
 
         @Override
         public Ad deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-            EnumMap<AdField, Object> fields = jsonParser.getCodec().readValues(jsonParser, new TypeReference<EnumMap<AdField, Object>>() {});
-            JsonNode node = jsonParser.getCodec().readTree(jsonParser);
+            EnumMap<AdField, Object> fields;
+            fields = jsonParser.getCodec().readValue(jsonParser, new TypeReference<EnumMap<AdField, Object>>() {});
 
-            ProviderFactory.Providers provider = ProviderFactory.Providers.valueOf(node.get("Provider").asText());
-            String url = node.get("URL").asText();
+            fields.put(AdField.Provider, ProviderFactory.Providers.valueOf(fields.get(AdField.Provider).toString()));
+            fields.put(AdField.Type, AssetType.valueOf(fields.get(AdField.Type).toString()));
+            if (fields.get(AdField.Date) != null)
+                fields.put(AdField.Date, new Date((Long)fields.get(AdField.Date)));
 
-            ProviderFactory factory = ProviderFactory.createFactory(provider);
-            Ad ad = factory.createAd(url);
+            ProviderFactory factory = ProviderFactory.createFactory((ProviderFactory.Providers) fields.get(AdField.Provider));
+            Ad ad = factory.createAd(fields.get(AdField.URL).toString());
 
-
-            ad.fields.putAll((Map<AdField, Object>)jsonParser.readValuesAs(new TypeReference<EnumMap<AdField, Object>>(){}));
+            ad.fields.putAll(fields);
 
             return ad;
         }
