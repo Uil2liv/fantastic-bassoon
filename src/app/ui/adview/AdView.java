@@ -4,6 +4,7 @@ import app.core.Asset;
 import app.core.common.Ad;
 import app.ui.table.AssetTable;
 import sun.awt.image.ToolkitImage;
+import sun.plugin.dom.html.HTMLElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -122,10 +123,17 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
         } else {
             try {
                 File img = new File("LeBonCoin\\1388631331\\95a2baf43e0a48e08ccd31ea7ca34b0a16091aa7.jpg");
-                doc.insertAfterStart(body, "<img style=\"width: 50;\"src=\""+ img.toURI().toString() + "\" />");
+                BufferedImage bi = ImageIO.read(img);
+                float ar = (float)bi.getHeight()/bi.getWidth();
+                int width = 300;
+                int height = (int)(width * ar);
+                doc.insertAfterStart(body, "<img src=\""+ img.toURI().toString() +
+                        "\" width=" + width + " height=" + height +" align=right />");
 
-                doc.insertString(doc.getLength(), "Maison de blablablah" + "\n", title);
-                doc.insertString(doc.getLength(), NumberFormat.getCurrencyInstance().format((long)123000), price);
+                doc.insertBeforeEnd(body, "<h1>Maison de blablablah</h1>");
+//                doc.insertString(doc.getLength(), "Maison de blablablah" + "\n", title);
+                doc.insertBeforeEnd(body, "<p>"+NumberFormat.getCurrencyInstance().format((long)123000)+"</p>");
+//                doc.insertString(doc.getLength(), NumberFormat.getCurrencyInstance().format((long)123000), price);
             } catch (BadLocationException e) {
                 e.printStackTrace();
             } catch (IOException e) {
