@@ -8,6 +8,9 @@ import sun.plugin.dom.html.HTMLElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.text.*;
 import javax.swing.text.html.HTML;
@@ -19,9 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 
-//public class AdView extends JTextPane implements AssetTable.AssetSelectionListener{
-public class AdView extends JEditorPane implements AssetTable.AssetSelectionListener{
+public class AdView extends JTextPane implements AssetTable.AssetSelectionListener{
+//public class AdView extends JEditorPane implements AssetTable.AssetSelectionListener{
     Style body;
     Style headers;
     Style title;
@@ -31,9 +35,9 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
     Style picture;
 
     public AdView() {
-        super("text/html", null);
-
-        this.setEditorKit(new HTMLEditorKit());
+//        super("text/html", null);
+        super();
+//        this.setEditorKit(new HTMLEditorKit());
         this.setEditable(false);
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
@@ -70,16 +74,13 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
     }
 
     void writeDocument(Asset asset) {
-        HTMLDocument doc = (HTMLDocument)this.getDocument();
+        Document doc = this.getDocument();
 
         try {
             doc.remove(0, doc.getLength());
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
-
-        Element[] roots = doc.getRootElements();
-        Element body = roots[0].getElement(0);
 
         if (asset != null) {
             // TODO Display pictures if any
@@ -113,7 +114,30 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
                 }
 
                 doc.insertString(doc.getLength(), "\nDescription :\n", label);
-                doc.insertString(doc.getLength(), asset.get(Ad.AdField.Description).toString(), this.body);
+                doc.insertString(doc.getLength(), asset.get(Ad.AdField.Description).toString() + "\n", this.body);
+
+                for (String imgPath : (Collection<String>)asset.get(Ad.AdField.Pictures)) {
+                    File imgFile = new File(imgPath);
+                    try {
+                        BufferedImage bi = ImageIO.read(imgFile);
+                        float ar = (float)bi.getHeight()/(float)bi.getWidth();
+                        int width = 100;
+                        int height = (int)(width * ar);
+                        JLabel imgLabel = new JLabel(new ImageIcon(bi.getScaledInstance(width, height, 0)));
+
+                        // Set a margin with a compound border
+                        Border border = imgLabel.getBorder();
+                        Border margin = new EmptyBorder(10,10,10,10);
+                        imgLabel.setBorder(new CompoundBorder(border, margin));
+
+                        this.insertComponent(imgLabel);
+//                        doc.insertBeforeEnd(body, "<img src=\""+ imgFile.toURI().toString() +
+//                                "\" width=" + width + " height=" + height +" hspace=5 vspace=5 />");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
 
                 this.setCaretPosition(0);
 
@@ -121,6 +145,7 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
                 e.printStackTrace();
             }
         } else {
+/*
             try {
                 File img = new File("LeBonCoin\\1388631331\\95a2baf43e0a48e08ccd31ea7ca34b0a16091aa7.jpg");
                 BufferedImage bi = ImageIO.read(img);
@@ -139,11 +164,11 @@ public class AdView extends JEditorPane implements AssetTable.AssetSelectionList
             } catch (IOException e) {
                 e.printStackTrace();
             }
+*/
         }
     }
 
     // Implements AssetSelectionListener
-
     @Override
     public void assetSelectionChanged(Asset a) {
         if (a != null) {
