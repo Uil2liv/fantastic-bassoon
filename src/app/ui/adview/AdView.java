@@ -3,19 +3,13 @@ package app.ui.adview;
 import app.core.Asset;
 import app.core.common.Ad;
 import app.ui.table.AssetTable;
-import sun.awt.image.ToolkitImage;
-import sun.plugin.dom.html.HTMLElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.text.*;
-import javax.swing.text.html.HTML;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,20 +18,16 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
-public class AdView extends JTextPane implements AssetTable.AssetSelectionListener{
-//public class AdView extends JEditorPane implements AssetTable.AssetSelectionListener{
+public class AdView extends JTextPane implements AssetTable.AssetSelectionListener, Scrollable{
     Style body;
     Style headers;
     Style title;
     Style price;
     Style criteria;
     Style label;
-    Style picture;
 
     public AdView() {
-//        super("text/html", null);
         super();
-//        this.setEditorKit(new HTMLEditorKit());
         this.setEditable(false);
 
         StyleContext sc = StyleContext.getDefaultStyleContext();
@@ -62,13 +52,6 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
 
         title = sc.addStyle("title", headers);
         title.addAttribute(StyleConstants.Size, 24);
-
-
-/*
-        picture = sc.addStyle("picture", null);
-        ImageIcon image = new ImageIcon("LeBonCoin\\1388631331\\95a2baf43e0a48e08ccd31ea7ca34b0a16091aa7.jpg");
-        StyleConstants.setIcon(picture, image);
-*/
 
         this.writeDocument(null);
     }
@@ -121,7 +104,7 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
                     try {
                         BufferedImage bi = ImageIO.read(imgFile);
                         float ar = (float)bi.getHeight()/(float)bi.getWidth();
-                        int width = 100;
+                        int width = 200;
                         int height = (int)(width * ar);
                         JLabel imgLabel = new JLabel(new ImageIcon(bi.getScaledInstance(width, height, 0)));
 
@@ -131,8 +114,7 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
                         imgLabel.setBorder(new CompoundBorder(border, margin));
 
                         this.insertComponent(imgLabel);
-//                        doc.insertBeforeEnd(body, "<img src=\""+ imgFile.toURI().toString() +
-//                                "\" width=" + width + " height=" + height +" hspace=5 vspace=5 />");
+                        doc.insertString(doc.getLength(), " ", body);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -145,26 +127,7 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
                 e.printStackTrace();
             }
         } else {
-/*
-            try {
-                File img = new File("LeBonCoin\\1388631331\\95a2baf43e0a48e08ccd31ea7ca34b0a16091aa7.jpg");
-                BufferedImage bi = ImageIO.read(img);
-                float ar = (float)bi.getHeight()/bi.getWidth();
-                int width = 300;
-                int height = (int)(width * ar);
-                doc.insertAfterStart(body, "<img src=\""+ img.toURI().toString() +
-                        "\" width=" + width + " height=" + height +" align=right />");
 
-                doc.insertBeforeEnd(body, "<h1>Maison de blablablah</h1>");
-//                doc.insertString(doc.getLength(), "Maison de blablablah" + "\n", title);
-                doc.insertBeforeEnd(body, "<p>"+NumberFormat.getCurrencyInstance().format((long)123000)+"</p>");
-//                doc.insertString(doc.getLength(), NumberFormat.getCurrencyInstance().format((long)123000), price);
-            } catch (BadLocationException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-*/
         }
     }
 
@@ -175,4 +138,8 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
             writeDocument(a);
         }
     }
+
+    // Implements Scrollable
+    @Override
+    public boolean getScrollableTracksViewportWidth() {return true;}
 }
