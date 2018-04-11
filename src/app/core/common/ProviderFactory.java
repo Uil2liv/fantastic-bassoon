@@ -6,7 +6,15 @@ import org.openqa.selenium.WebDriver;
 
 public abstract class ProviderFactory {
     public enum Providers {
-        LeBonCoin
+        LeBonCoin ("Le Bon Coin");
+
+        private final String name;
+
+        Providers(String name) {
+            this.name = name;
+        }
+
+        public String getName() { return this.name; }
     }
 
     public ProviderFactory() { }
