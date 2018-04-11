@@ -50,6 +50,20 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
         return null;
     }
 
+    public int getAveragePrice() {
+        if (getAssetCount() > 0) {
+            int sum = 0;
+
+            for (Asset asset : this.assets) {
+                sum += asset.getAveragePrice();
+            }
+
+            return sum / this.getAssetCount();
+        } else {
+            return 0;
+        }
+    }
+
     public String toString() {
         return this.query.toString();
     }

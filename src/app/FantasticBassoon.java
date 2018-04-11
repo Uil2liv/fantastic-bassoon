@@ -21,7 +21,7 @@ public class FantasticBassoon{
         }
     }
 
-    static Vector<AssetTableModel> selectionChangedListeners = new Vector<>();
+    private static Vector<SelectedSearchListener> selectionChangedListeners = new Vector<>();
 
     private static SearchTreeItem selectedSearch = searches;
     public static SearchTreeItem getSelectedSearch() {
@@ -48,16 +48,16 @@ public class FantasticBassoon{
     }
 
     private static void notifySelectionChanged() {
-        for (AssetTableModel listener : selectionChangedListeners)
-            listener.fireTableDataChanged();
+        for (SelectedSearchListener listener : selectionChangedListeners)
+            listener.SelectedSearchChanged();
     }
 
-    public static void registerSelectionChangedListener (AssetTableModel tableModel){
-        selectionChangedListeners.add(tableModel);
+    public static void registerSelectionChangedListener (SelectedSearchListener listener){
+        selectionChangedListeners.add(listener);
     }
 
-    public static void unregisterSelectionChangedListener(AssetTableModel tableModel) {
-        selectionChangedListeners.remove(tableModel);
+    public static void unregisterSelectionChangedListener(SelectedSearchListener listener) {
+        selectionChangedListeners.remove(listener);
     }
 
     public static void createAndShowNewSearchContext() {
@@ -71,6 +71,10 @@ public class FantasticBassoon{
     public static void closeApplication() {
         save();
         System.exit(0);
+    }
+
+    public static void mergeAssets() {
+        Asset.merge();
     }
 
     public static void save() {
@@ -100,5 +104,9 @@ public class FantasticBassoon{
 
     public interface Refreshable {
         void refresh();
+    }
+
+    public interface SelectedSearchListener {
+        void SelectedSearchChanged();
     }
 }

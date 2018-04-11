@@ -1,13 +1,14 @@
 package app.ui.table;
 
 import app.FantasticBassoon;
+import app.core.Search;
 import app.core.common.Ad;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Date;
 
 
-public class AssetTableModel extends DefaultTableModel {
+public class AssetTableModel extends DefaultTableModel implements FantasticBassoon.SelectedSearchListener{
     public AssetTableModel() {
         super();
         FantasticBassoon.registerSelectionChangedListener(this);
@@ -77,5 +78,11 @@ public class AssetTableModel extends DefaultTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 
+    }
+
+    // Implements SelectedSearchListener Interface
+    @Override
+    public void SelectedSearchChanged() {
+        fireTableDataChanged();
     }
 }

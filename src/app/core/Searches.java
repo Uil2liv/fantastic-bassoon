@@ -3,6 +3,7 @@ package app.core;
 import app.core.Search;
 import app.core.common.Ad;
 import app.ui.tree.SearchTreeItem;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -85,6 +86,10 @@ public class Searches implements SearchTreeItem {
     public int getAssetCount(){
         return 0;
     }
+
+    @Override
+    @JsonIgnore
+    public int getAveragePrice() { return 0; }
 
     @Override
     public Object getValue(int i, Ad.AdField key) {

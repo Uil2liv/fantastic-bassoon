@@ -36,6 +36,10 @@ public class MainFrame extends JFrame {
         Tool_Bar toolBar = new Tool_Bar();
         panel.add(toolBar, BorderLayout.PAGE_START);
 
+        // Status Bar Definition
+        StatusBar statusBar = new StatusBar();
+        panel.add(statusBar, BorderLayout.SOUTH);
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 

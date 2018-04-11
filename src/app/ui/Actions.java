@@ -24,6 +24,9 @@ public class Actions {
     public static AbstractAction saveAction = createAction("Save", "Enregistrer",
             "Enregistrer les recherches", FantasticBassoon::save,
             KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), KeyEvent.VK_E);
+    public static AbstractAction mergeAssets = createAction(null, "Fusionner,",
+            "Fusionner les annonces", FantasticBassoon::mergeAssets,
+            null, null);
 
     static private AbstractAction createAction(String icon, String altText, String toolTip, Runnable func,
                                                KeyStroke shortcut, int mnemonic){
