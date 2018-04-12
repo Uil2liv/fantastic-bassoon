@@ -35,6 +35,9 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
             if (getAsset(ad) != null) {
                 Asset a = getAsset(ad);
                 a.update(ad);
+            } else if (ad.get(Ad.AdField.SubmitterId) != null && getAsset((String)ad.get(Ad.AdField.SubmitterId)) != null) {
+                Asset a = getAsset((String)ad.get(Ad.AdField.SubmitterId));
+                a.add(ad);
             } else {
                 Asset a = new Asset(ad);
                 assets.add(a);
@@ -45,6 +48,14 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
     public Asset getAsset(Ad ad) {
         for (Asset a : assets) {
             if (a.getAd(ad) != null)
+                return a;
+        }
+        return null;
+    }
+
+    public Asset getAsset(String submitterId) {
+        for (Asset a : assets) {
+            if (((Vector<String>)a.get(Ad.AdField.SubmitterId)).contains(submitterId))
                 return a;
         }
         return null;

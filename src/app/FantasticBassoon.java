@@ -44,12 +44,12 @@ public class FantasticBassoon{
         if (selection.length == 1 && selection[0] instanceof SearchTreeItem)
             changeSelectedSearch((SearchTreeItem)selection[0]);
 
-        if (selection. instanceof Removable[])
+        if (selection.length > 0 && selection[0] instanceof Removable)
             Actions.removeSearchAction.setEnabled(true);
         else
             Actions.removeSearchAction.setEnabled(false);
 
-        if (selection.getClass().isAssignableFrom(Mergeable.class) && selection.length > 1)
+        if (selection.length > 1 && selection[0] instanceof Mergeable )
             Actions.mergeAssets.setEnabled(true);
         else
             Actions.mergeAssets.setEnabled(false);
@@ -107,7 +107,6 @@ public class FantasticBassoon{
     }
 
     public static void mergeAssets() {
-        System.out.println("Fusion des annonces...");
         Asset.merge(getSelectedAssets());
         notifySelectedSearchChanged();
     }

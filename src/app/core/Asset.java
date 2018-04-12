@@ -29,6 +29,12 @@ public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, Fa
 
     public Object get(Ad.AdField key) {
         switch (key){
+            case SubmitterId:
+                Vector<String> submitterIds = new Vector<>();
+                for (Ad ad : this)
+                    if (ad.get(Ad.AdField.SubmitterId) != null)
+                        submitterIds.add((String)ad.get(Ad.AdField.SubmitterId));
+                return submitterIds;
             case Pictures:
                 Vector<String> pictures = new Vector<>();
                 for (Ad ad : this)

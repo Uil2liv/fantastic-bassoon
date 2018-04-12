@@ -10,6 +10,6 @@ public class TextField extends Field {
     @Override
     public void fill(Object o) {
         if (!o.toString().equals(""))
-            this.we.sendKeys((String)o);
+            this.we.sendKeys(o.toString());
     }
 }

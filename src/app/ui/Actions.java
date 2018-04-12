@@ -26,9 +26,9 @@ public class Actions {
             KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), KeyEvent.VK_E);
     public static AbstractAction mergeAssets = createAction("Fusionner",
             "Fusionner les annonces", FantasticBassoon::mergeAssets,
-            KeyEvent.VK_F);
+            KeyEvent.VK_F, false);
 
-    static private AbstractAction createAction(String altText, String toolTip, Runnable func, int mnemonic) {
+    static private AbstractAction createAction(String altText, String toolTip, Runnable func, int mnemonic, boolean enabled) {
         AbstractAction action = new AbstractAction(altText) {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,6 +38,7 @@ public class Actions {
 
         action.putValue(Action.SHORT_DESCRIPTION, toolTip);
         action.putValue(Action.MNEMONIC_KEY, mnemonic);
+        action.setEnabled(enabled);
 
         return action;
     }
@@ -54,13 +55,11 @@ public class Actions {
         URL smallIconURL = Actions.class.getResource("/toolbarButtonGraphics/general/" + icon + "16.gif");
         URL largeIconURL = Actions.class.getResource("/toolbarButtonGraphics/general/" + icon + "24.gif");
 
-        AbstractAction action = createAction(altText, toolTip, func, mnemonic);
+        AbstractAction action = createAction(altText, toolTip, func, mnemonic, enabled);
 
         action.putValue(Action.SMALL_ICON, new ImageIcon(smallIconURL));
         //action.putValue(Action.LARGE_ICON_KEY, new ImageIcon(largeIconURL));
         action.putValue(Action.ACCELERATOR_KEY, shortcut);
-
-        action.setEnabled(enabled);
 
         return action;
     }
