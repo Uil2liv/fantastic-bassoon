@@ -17,6 +17,8 @@ public class AssetTable extends JTable {
     public AssetTable(TableModel t) {
         super(t);
 
+        this.addAssetSelectionListener(FantasticBassoon.assetSelectionListener);
+
         TableRowSorter<AssetTableModel> sorter = new TableRowSorter<>((AssetTableModel)this.getModel());
         this.setRowSorter(sorter);
 
@@ -48,7 +50,7 @@ public class AssetTable extends JTable {
     }
 
     public interface AssetSelectionListener {
-        void assetSelectionChanged(Asset a);
+        void assetSelectionChanged(Asset[] a);
     }
 
     Vector<AssetSelectionListener> selectionListeners = new Vector<>();
@@ -60,7 +62,7 @@ public class AssetTable extends JTable {
         selectionListeners.remove(asl);
     }
 
-    private void notifyAssetSelectionChanged(Asset a) {
+    private void notifyAssetSelectionChanged(Asset[] a) {
         for (AssetSelectionListener asl : selectionListeners) {
             asl.assetSelectionChanged(a);
         }
@@ -72,8 +74,14 @@ public class AssetTable extends JTable {
 
         // Let know listeners that a new Asset is selected
         if (!e.getValueIsAdjusting()) {
-            Asset a = FantasticBassoon.getSelectedSearch().getAsset(this.convertRowIndexToModel(getSelectedRow()));
-            notifyAssetSelectionChanged(a);
+            Asset[] assets = new Asset[getSelectedRowCount()];
+            int[] selectedRows = getSelectedRows();
+
+            for (int i = 0; i < selectedRows.length; i++) {
+                assets[i] = FantasticBassoon.getSelectedSearch().getAsset(this.convertRowIndexToModel(selectedRows[i]));
+            }
+
+            notifyAssetSelectionChanged(assets);
         }
     }
 

@@ -6,7 +6,7 @@ import app.core.common.Ad;
 
 import javax.swing.tree.MutableTreeNode;
 
-public interface SearchTreeItem extends MutableTreeNode, FantasticBassoon.Refreshable{
+public interface SearchTreeItem extends MutableTreeNode, FantasticBassoon.Refreshable, FantasticBassoon.Selectable{
     int getAssetCount();
     int getAveragePrice();
     Object getValue(int i, Ad.AdField key);

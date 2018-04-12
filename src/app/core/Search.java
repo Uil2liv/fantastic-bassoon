@@ -50,6 +50,7 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
         return null;
     }
 
+    @JsonIgnore
     public int getAveragePrice() {
         if (getAssetCount() > 0) {
             int sum = 0;
@@ -83,6 +84,10 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
     @Override
     public Asset getAsset(int i) {
         return assets.get(i);
+    }
+
+    public void removeAsset(Asset asset) {
+        assets.remove(asset);
     }
 
     // Implements MutableTreeNode

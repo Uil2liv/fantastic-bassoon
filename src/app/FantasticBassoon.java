@@ -1,14 +1,18 @@
 package app;
 
+import app.ui.table.AssetTable;
 import app.ui.table.AssetTableModel;
 import app.ui.tree.SearchTreeItem;
 import app.ui.*;
 import app.core.common.*;
 import app.core.*;
+import jdk.internal.org.objectweb.asm.TypeReference;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class FantasticBassoon{
@@ -20,7 +24,40 @@ public class FantasticBassoon{
             providers.add(new Provider(provider));
         }
     }
+    private static Selectable[] selection;
+    public static Asset[] getSelectedAssets() {
+        Vector<Asset> assets = new Vector<>();
 
+        for (Selectable sel : selection){
+            if (sel instanceof Asset)
+                assets.add((Asset)sel);
+        }
+
+        if (assets.size() > 0)
+            return assets.toArray(new Asset[]{});
+        else
+            return null;
+    }
+
+    public static void changeSelection(Selectable[] selection) {
+        FantasticBassoon.selection = selection;
+        if (selection.length == 1 && selection[0] instanceof SearchTreeItem)
+            changeSelectedSearch((SearchTreeItem)selection[0]);
+
+        if (selection. instanceof Removable[])
+            Actions.removeSearchAction.setEnabled(true);
+        else
+            Actions.removeSearchAction.setEnabled(false);
+
+        if (selection.getClass().isAssignableFrom(Mergeable.class) && selection.length > 1)
+            Actions.mergeAssets.setEnabled(true);
+        else
+            Actions.mergeAssets.setEnabled(false);
+
+    }
+    public static AssetTable.AssetSelectionListener assetSelectionListener = assets -> {
+        changeSelection(assets);
+    };
     private static Vector<SelectedSearchListener> selectionChangedListeners = new Vector<>();
 
     private static SearchTreeItem selectedSearch = searches;
@@ -35,19 +72,15 @@ public class FantasticBassoon{
         } catch (NullPointerException ex) {
             node = null;
         }
-        changeSelectedSearch((SearchTreeItem) node);
+        changeSelection(new Selectable[] {(SearchTreeItem)node});
     };
 
     private static void changeSelectedSearch(SearchTreeItem search) {
         selectedSearch = search;
-        notifySelectionChanged();
-        if (search instanceof Removable)
-            Actions.removeSearchAction.setEnabled(true);
-        else
-            Actions.removeSearchAction.setEnabled(false);
+        notifySelectedSearchChanged();
     }
 
-    private static void notifySelectionChanged() {
+    private static void notifySelectedSearchChanged() {
         for (SelectedSearchListener listener : selectionChangedListeners)
             listener.SelectedSearchChanged();
     }
@@ -74,7 +107,9 @@ public class FantasticBassoon{
     }
 
     public static void mergeAssets() {
-        Asset.merge();
+        System.out.println("Fusion des annonces...");
+        Asset.merge(getSelectedAssets());
+        notifySelectedSearchChanged();
     }
 
     public static void save() {
@@ -83,7 +118,7 @@ public class FantasticBassoon{
 
     public static void refresh() {
         ((Refreshable)selectedSearch).refresh();
-        notifySelectionChanged();
+        notifySelectedSearchChanged();
     }
 
     private static void createAndShowMainFrame() {
@@ -100,7 +135,11 @@ public class FantasticBassoon{
         SwingUtilities.invokeLater(FantasticBassoon::createAndShowMainFrame);
     }
 
-    public interface Removable{}
+    public interface Selectable {}
+
+    public interface Removable {}
+
+    public interface Mergeable {}
 
     public interface Refreshable {
         void refresh();
@@ -109,4 +148,6 @@ public class FantasticBassoon{
     public interface SelectedSearchListener {
         void SelectedSearchChanged();
     }
+
+
 }

@@ -11,5 +11,6 @@ public class Tool_Bar extends JToolBar{
         this.add(new JToolBar.Separator());
         this.add(Actions.removeSearchAction);
         this.add(Actions.refreshSearchAction);
+        this.add(Actions.mergeAssets);
     }
 }

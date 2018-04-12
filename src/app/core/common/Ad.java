@@ -91,14 +91,25 @@ public abstract class Ad extends Page {
 
         @Override
         public Ad deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+            // Deserialize the json object as is, no type checking
             EnumMap<AdField, Object> fields;
             fields = jsonParser.getCodec().readValue(jsonParser, new TypeReference<EnumMap<AdField, Object>>() {});
 
+            // Convert the provider from String to Providers
             fields.put(AdField.Provider, ProviderFactory.Providers.valueOf(fields.get(AdField.Provider).toString()));
+
+            // Convert the asset type from String to AssetType
             fields.put(AdField.Type, AssetType.valueOf(fields.get(AdField.Type).toString()));
+
+            // Convert the asset date from Int to Date
             if (fields.get(AdField.Date) != null)
                 fields.put(AdField.Date, new Date((Long)fields.get(AdField.Date)));
 
+            // Convert the pictures collection from ArrayList to Vector
+            if (fields.get(AdField.Pictures) != null)
+                fields.put(AdField.Pictures, new Vector<>((ArrayList<String>)fields.get(AdField.Pictures)));
+
+            // Create a concrete Ad, and insert the converted fields
             ProviderFactory factory = ProviderFactory.createFactory((ProviderFactory.Providers) fields.get(AdField.Provider));
             Ad ad = factory.createAd(fields.get(AdField.URL).toString());
 

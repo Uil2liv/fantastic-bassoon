@@ -1,10 +1,11 @@
 package app.core;
 
+import app.FantasticBassoon;
 import app.core.common.Ad;
 
 import java.util.Vector;
 
-public class Asset extends Vector<Ad> {
+public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, FantasticBassoon.Mergeable {
     public Asset() {
         super();
         this.status = Status.New;
@@ -15,14 +16,30 @@ public class Asset extends Vector<Ad> {
         this.add(ad);
     }
 
+    public static void merge(Asset[] assets){
+        if (assets.length > 1) {
+            for (int i = 1; i < assets.length; i++) {
+                assets[0].addAll(assets[i]);
+                ((Search)FantasticBassoon.getSelectedSearch()).removeAsset(assets[i]);
+            }
+        }
+    }
+
     public Status status;
 
     public Object get(Ad.AdField key) {
-        for (Ad ad : this) {
-            if (ad.get(key) != null)
-                return ad.get(key);
+        switch (key){
+            case Pictures:
+                Vector<String> pictures = new Vector<>();
+                for (Ad ad : this)
+                    pictures.addAll((Vector<String>)ad.get(key));
+                return pictures;
+            default:
+                for (Ad ad : this) {
+                    if (ad.get(key) != null)
+                        return ad.get(key);
+                }
         }
-
         return null;
     }
 

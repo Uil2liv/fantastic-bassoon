@@ -73,7 +73,6 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
         }
 
         if (asset != null) {
-            // TODO Display pictures if any
             try {
                 doc.insertString(doc.getLength(), asset.get(Ad.AdField.Title) + "\n", title);
                 if (asset.get(Ad.AdField.Area) != null)
@@ -105,14 +104,15 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
                 doc.insertString(doc.getLength(), "\nDescription :\n", label);
                 doc.insertString(doc.getLength(), asset.get(Ad.AdField.Description).toString() + "\n", this.body);
 
-                if (((Collection<String>)asset.get(Ad.AdField.Pictures)).size() > 0) {
+                Vector<String> pictures = (Vector<String>)asset.get(Ad.AdField.Pictures);
+                if (pictures.size() > 0) {
                     // Display a picture preview
-                    Preview preview = new Preview(((ArrayList<String>)asset.get(Ad.AdField.Pictures)).get(0));
+                    Preview preview = new Preview(pictures.get(0));
                     this.insertComponent(preview);
                     doc.insertString(doc.getLength(), "\n", body);
 
                     // Display thumbnails
-                    for (String imgPath : (ArrayList<String>) asset.get(Ad.AdField.Pictures)) {
+                    for (String imgPath : pictures) {
                         Thumbnail thumbnail = new Thumbnail(imgPath);
                         this.insertComponent(thumbnail);
                         doc.insertString(doc.getLength(), " ", body);
@@ -161,9 +161,9 @@ public class AdView extends JTextPane implements AssetTable.AssetSelectionListen
 
     // Implements AssetSelectionListener
     @Override
-    public void assetSelectionChanged(Asset a) {
-        if (a != null) {
-            writeDocument(a);
+    public void assetSelectionChanged(Asset[] a) {
+        if (a.length > 0) {
+            writeDocument(a[0]);
         }
     }
 

@@ -48,7 +48,6 @@ public class AssetTableModel extends DefaultTableModel implements FantasticBasso
             case 2: return Date.class;
             default: return null;
         }
-        //return getValueAt(0, columnIndex).getClass();
     }
 
     @Override

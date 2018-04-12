@@ -24,9 +24,23 @@ public class Actions {
     public static AbstractAction saveAction = createAction("Save", "Enregistrer",
             "Enregistrer les recherches", FantasticBassoon::save,
             KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK), KeyEvent.VK_E);
-    public static AbstractAction mergeAssets = createAction(null, "Fusionner,",
+    public static AbstractAction mergeAssets = createAction("Fusionner",
             "Fusionner les annonces", FantasticBassoon::mergeAssets,
-            null, null);
+            KeyEvent.VK_F);
+
+    static private AbstractAction createAction(String altText, String toolTip, Runnable func, int mnemonic) {
+        AbstractAction action = new AbstractAction(altText) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                func.run();
+            }
+        };
+
+        action.putValue(Action.SHORT_DESCRIPTION, toolTip);
+        action.putValue(Action.MNEMONIC_KEY, mnemonic);
+
+        return action;
+    }
 
     static private AbstractAction createAction(String icon, String altText, String toolTip, Runnable func,
                                                KeyStroke shortcut, int mnemonic){
@@ -40,17 +54,12 @@ public class Actions {
         URL smallIconURL = Actions.class.getResource("/toolbarButtonGraphics/general/" + icon + "16.gif");
         URL largeIconURL = Actions.class.getResource("/toolbarButtonGraphics/general/" + icon + "24.gif");
 
-        AbstractAction action = new AbstractAction(altText, new ImageIcon(smallIconURL)) {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                func.run();
-            }
-        };
+        AbstractAction action = createAction(altText, toolTip, func, mnemonic);
 
-        action.putValue(Action.LARGE_ICON_KEY, new ImageIcon(largeIconURL));
-        action.putValue(Action.SHORT_DESCRIPTION, toolTip);
+        action.putValue(Action.SMALL_ICON, new ImageIcon(smallIconURL));
+        //action.putValue(Action.LARGE_ICON_KEY, new ImageIcon(largeIconURL));
         action.putValue(Action.ACCELERATOR_KEY, shortcut);
-        action.putValue(Action.MNEMONIC_KEY, mnemonic);
+
         action.setEnabled(enabled);
 
         return action;
