@@ -10,8 +10,12 @@ import jdk.internal.org.objectweb.asm.TypeReference;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionListener;
+import java.io.*;
 import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -98,7 +102,11 @@ public class FantasticBassoon{
     }
 
     public static void deleteSearch() {
-        searches.remove(selectedSearch);
+        for (Selectable sel : selection)
+            if (sel instanceof Removable)
+                ((Removable)sel).remove();
+
+        notifySelectedSearchChanged();
     }
 
     public static void closeApplication() {
@@ -116,7 +124,7 @@ public class FantasticBassoon{
     }
 
     public static void refresh() {
-        ((Refreshable)selectedSearch).refresh();
+        (selectedSearch).refresh();
         notifySelectedSearchChanged();
     }
 
@@ -127,16 +135,29 @@ public class FantasticBassoon{
     public static void main(String[] args) {
         searches.load("searches.json");
 
+        // Try to locate the Chrome Webdriver
+        File webDriver = new File("chromedriver.exe");
+        if (!webDriver.exists()) {
+            try {
+                InputStream deliveredWD = FantasticBassoon.class.getResourceAsStream("/chromedriver.exe");
+                Files.copy(deliveredWD, webDriver.toPath());
+            } catch (IOException e) {
+                System.out.println("Impossible de créer le WebDriver.");
+                FantasticBassoon.closeApplication();
+            }
+        }
+
         // Set path to Chrome Webdriver
-        URL webDriverPath = FantasticBassoon.class.getResource("/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", webDriverPath.getPath());
+        System.setProperty("webdriver.chrome.driver", webDriver.getPath());
 
         SwingUtilities.invokeLater(FantasticBassoon::createAndShowMainFrame);
     }
 
     public interface Selectable {}
 
-    public interface Removable {}
+    public interface Removable {
+        void remove();
+    }
 
     public interface Mergeable {}
 

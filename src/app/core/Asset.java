@@ -5,7 +5,7 @@ import app.core.common.Ad;
 
 import java.util.Vector;
 
-public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, FantasticBassoon.Mergeable {
+public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, FantasticBassoon.Mergeable, FantasticBassoon.Removable {
     public Asset() {
         super();
         this.status = Status.New;
@@ -38,7 +38,8 @@ public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, Fa
             case Pictures:
                 Vector<String> pictures = new Vector<>();
                 for (Ad ad : this)
-                    pictures.addAll((Vector<String>)ad.get(key));
+                    if (ad.get(key) != null)
+                        pictures.addAll((Vector<String>)ad.get(key));
                 return pictures;
             default:
                 for (Ad ad : this) {
@@ -79,6 +80,11 @@ public class Asset extends Vector<Ad> implements FantasticBassoon.Selectable, Fa
         }
 
         return 0;
+    }
+
+    // Implements Removable
+    public void remove() {
+        ((Search)FantasticBassoon.getSelectedSearch()).removeAsset(this);
     }
 
     enum Status {

@@ -43,7 +43,7 @@ public abstract class Ad extends Page {
         return true;
     }
 
-    public abstract void getFields();
+    public abstract Ad getFields();
 
     public enum AdField {
         Id,
@@ -99,7 +99,8 @@ public abstract class Ad extends Page {
             fields.put(AdField.Provider, ProviderFactory.Providers.valueOf(fields.get(AdField.Provider).toString()));
 
             // Convert the asset type from String to AssetType
-            fields.put(AdField.Type, AssetType.valueOf(fields.get(AdField.Type).toString()));
+            if (fields.get(AdField.Type) != null )
+                fields.put(AdField.Type, AssetType.valueOf(fields.get(AdField.Type).toString()));
 
             // Convert the asset date from Int to Date
             if (fields.get(AdField.Date) != null)

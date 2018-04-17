@@ -8,10 +8,14 @@ import app.core.common.Provider;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.swing.*;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NON_PRIVATE)
 public class Search implements SearchTreeItem, FantasticBassoon.Removable {
@@ -173,14 +177,28 @@ public class Search implements SearchTreeItem, FantasticBassoon.Removable {
         return null;
     }
 
+    // Implements Removable
+    public void remove() {
+        FantasticBassoon.searches.remove(this);
+    }
+
     // Implements Refreshable
     public void refresh() {
-        Vector<Ad> ads = new Vector<>();
+        ExecutorService es = Executors.newCachedThreadPool();
 
         for (Provider provider : FantasticBassoon.providers) {
-            ads.addAll(provider.search(query));
+            es.execute(() -> {
+                Vector<Ad> ads = new Vector<>();
+                ads.addAll(provider.search(query));
+                updateAssets(ads);
+            });
         }
 
-        updateAssets(ads);
+        es.shutdown();
+        try {
+            es.awaitTermination(10, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

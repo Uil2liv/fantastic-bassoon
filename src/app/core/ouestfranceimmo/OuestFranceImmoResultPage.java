@@ -32,8 +32,8 @@ public class OuestFranceImmoResultPage extends ResultPage {
         .presenceOfAllElementsLocatedBy(By.xpath("//a[contains(@class, \"annLink\")]"))))) {
 
             Ad ad = factory.createAd(we.getAttribute("href"));
-            ad.getFields();
-            ads.add(ad);
+            if (ad.getFields() != null)
+                ads.add(ad);
         }
 
         return ads;

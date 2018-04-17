@@ -1,5 +1,6 @@
 package app.core.common;
 
+import app.core.immonotaires.ImmoNotairesFactory;
 import app.core.leboncoin.LeBonCoinFactory;
 import app.core.ouestfranceimmo.OuestFranceImmoFactory;
 
@@ -8,7 +9,8 @@ import org.openqa.selenium.WebDriver;
 public abstract class ProviderFactory {
     public enum Providers {
         LeBonCoin ("Le Bon Coin"),
-        OuestFranceImmo ("Ouest-France Immo");
+        OuestFranceImmo ("Ouest-France Immo"),
+        ImmoNotaires ("Immobilier Notaires");
 
         private final String name;
 
@@ -27,6 +29,8 @@ public abstract class ProviderFactory {
                 return new LeBonCoinFactory();
             case OuestFranceImmo:
                 return new OuestFranceImmoFactory();
+            case ImmoNotaires:
+                return new ImmoNotairesFactory();
             default:
                 return null;
         }

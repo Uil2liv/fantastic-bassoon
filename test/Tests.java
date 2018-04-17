@@ -23,14 +23,14 @@ public class Tests {
         Query q = new Query();
         q.add(Query.Keys.Location, "Guer");
         q.add(Query.Keys.Zip, "56380");
-        q.add(Query.Keys.Type, AssetType.House);
-        q.add(Query.Keys.MaxPrice, 200000);
-        q.add(Query.Keys.MinPrice, 100000);
-        q.add(Query.Keys.MinArea, 100);
-        q.add(Query.Keys.MaxArea, 200);
-        q.add(Query.Keys.MinRoom, 3);
+        q.add(Query.Keys.Type, AssetType.Lot);
+//        q.add(Query.Keys.MaxPrice, 300000);
+//        q.add(Query.Keys.MinPrice, 200000);
+        q.add(Query.Keys.MinArea, 800);
+        q.add(Query.Keys.MaxArea, 1500);
+//        q.add(Query.Keys.MinRoom, 3);
 
-        Provider p = new Provider(ProviderFactory.Providers.OuestFranceImmo);
+        Provider p = new Provider(ProviderFactory.Providers.ImmoNotaires);
         Vector<Ad> ads = p.search(q);
 
         System.out.println(ads.toString());

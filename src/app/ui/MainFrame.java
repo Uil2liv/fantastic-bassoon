@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-
+        // Search Tree definition
         SearchTree searchTree = new SearchTree();
         searchTree.setPreferredSize(new Dimension(200, 600));
         splitPane.setLeftComponent(searchTree);
@@ -51,7 +51,7 @@ public class MainFrame extends JFrame {
         JSplitPane contentPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         contentPane.setPreferredSize(new Dimension(800, 0));
 
-
+        // Asset Table definition
         AssetTable assetsList = new AssetTable(new AssetTableModel());
         assetsList.getModel().addTableModelListener(assetsList);
 
@@ -60,6 +60,7 @@ public class MainFrame extends JFrame {
         assetsListScroller.setPreferredSize(new Dimension(0, 200));
         contentPane.setTopComponent(assetsListScroller);
 
+        // Ad preview definition
         AdView adView = new AdView();
         assetsList.addAssetSelectionListener(adView);
         JScrollPane adViewScroller = new JScrollPane(adView);

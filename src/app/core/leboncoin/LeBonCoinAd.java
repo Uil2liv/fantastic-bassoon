@@ -34,7 +34,7 @@ public class LeBonCoinAd extends Ad {
     }
 
     @Override
-    public void getFields() {
+    public Ad getFields() {
         WebDriver wd = new ChromeDriver();
 
         wd.get(this.url.toString());
@@ -110,11 +110,11 @@ public class LeBonCoinAd extends Ad {
                         BufferedImage bufferedImage = ImageIO.read(imgUrl);
                         imgFile.mkdirs();
                         ImageIO.write(bufferedImage, imgFile.getName().substring(imgName.lastIndexOf(".")+1), imgFile);
-                        pictures.add(imgFile.getPath());
                     } catch (IOException e) {
                         System.out.println("Impossible de lire l'image: " + imgUrl.toString());
                     }
                 }
+                pictures.add(imgFile.getPath());
 
             } catch (MalformedURLException e) {
                 System.out.println("Cannot retrieve url: " + img.getAttribute("src"));
@@ -124,5 +124,6 @@ public class LeBonCoinAd extends Ad {
                 this.fields.put(AdField.Pictures, pictures);
         }
         wd.quit();
+        return this;
     }
 }
